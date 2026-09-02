@@ -2,7 +2,7 @@
 // Shell di-cache agar aplikasi tetap terbuka tanpa internet;
 // panggilan ke Supabase selalu lewat jaringan (network-first, tanpa cache).
 
-const CACHE = 'arcorp-hr-v1';
+const CACHE = 'arcorp-hr-v2';
 const SHELL = [
   './',
   './index.html',

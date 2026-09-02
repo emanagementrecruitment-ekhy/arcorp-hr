@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics=""><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"><style>
+*{box-sizing:border-box}
+body{margin:0;background:#08080A;font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#C9A24A;text-decoration:none}a:hover{color:#F2DC9B}
+input,textarea,button{font-family:inherit}
+input:focus,textarea:focus{outline:none}
+::placeholder{color:var(--ar-faint,rgba(237,233,226,.3))}
+.arScroll::-webkit-scrollbar{width:6px;height:6px}
+.arScroll::-webkit-scrollbar-thumb{background:var(--ar-goldline,rgba(229,196,102,.3));border-radius:6px}
+@keyframes arPulse{0%{box-shadow:0 0 0 0 rgba(229,196,102,.45)}70%{box-shadow:0 0 0 9px rgba(229,196,102,0)}100%{box-shadow:0 0 0 0 rgba(229,196,102,0)}}
+@keyframes arIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes arRing{0%{transform:scale(.75);opacity:.55}100%{transform:scale(1.35);opacity:0}}
+@keyframes arSpin{to{transform:rotate(360deg)}}
+</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0B0B0C"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="AR Corp HR"><link rel="apple-touch-icon" href="assets/icon-192.png"><script src="arcorp-server.js"></script><script>
+if ('serviceWorker' in navigator && location.protocol === 'https:'){
+  window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); });
+}
+</script></helmet>
+
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="300" fill="#0B0B0C"/>
+  <circle cx="200" cy="150" r="66" fill="none" stroke="#C9A24A" stroke-width="1.5" opacity=".45"/>
+  <text x="200" y="163" text-anchor="middle" font-family="Georgia,serif" font-size="46" font-weight="600" fill="#F2DC9B" letter-spacing="4">AR</text>
+</svg>
+</template>
+
+<div style="{{ rootStyle }}">
+
+<sc-if value="{{ showLogin }}" hint-placeholder-val="{{ true }}">
+<div style="min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; background: var(--ar-glow,radial-gradient(900px 500px at 50% -10%,rgba(229,196,102,.10),transparent 70%)); border-width: 1px; border-style: solid; border-color: #000000">
+  <div style="width:100%;max-width:430px;animation:arIn .5s ease both">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: 26px; position: relative">
+      <img src="assets/ar-corp-logo.png" alt="AR Corp" style="width:104px;height:104px;object-fit:contain;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));background:#08080A">
+      <div style="text-align:center">
+        <div style="font-family: Playfair Display; font-size: 17px; letter-spacing: .42em; color: var(--ar-gold,#C9A24A); text-transform: uppercase; text-decoration-line: none; font-weight: 700; border-width: 1px; border-style: solid; border-color: #000000">E-MANAGEMENT</div>
+        <div style="font-size:10.5px;letter-spacing:.24em;color:var(--ar-dim,rgba(237,233,226,.45));margin-top:7px;text-transform:uppercase">Operations Portal Check Your Slip Pay</div>
+      </div>
+    </div>
+
+    <div style="background:var(--ar-surface,#131317);border:1px solid var(--ar-goldline,rgba(229,196,102,.2));border-radius:var(--ar-rad,18px);padding:28px 26px 26px;box-shadow:0 30px 70px -30px rgba(0,0,0,.85)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px;background:var(--ar-surface2,rgba(255,255,255,.03));border-radius:12px;margin-bottom:22px">
+        
+        <button onClick="{{ pickPusat }}" style="{{ rolePusatStyle }}">STAFF &amp; PR</button><button onClick="{{ pickPusat }}" style="{{ rolePusatStyle }}" type="submit">OFFICE</button>
+      </div>
+
+      <sc-if value="{{ stepId }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ar-dim,rgba(237,233,226,.45)); margin-bottom: 9px; text-align: center; font-family: Roboto">Login Dengan Email Terdaftar</div>
+        <input value="{{ loginId }}" onChange="{{ onLoginId }}" placeholder="YOUR GMAIL" style="width: 100%; padding: 14px 15px; background: var(--ar-input,rgba(0,0,0,.4)); border: 1px solid var(--ar-goldline,rgba(229,196,102,.22)); border-radius: 11px; color: var(--ar-text,#EDE9E2); font-size: 10.5px; text-align: center">
+        <div style="min-height:19px;font-size:11.5px;color:#E4756B;margin-top:8px">{{ loginError }}</div>
+        <button onClick="{{ sendOtp }}" style="width:100%;padding:15px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Kirim Kode Verifikasi</button>
+        <div style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--ar-line,rgba(255,255,255,.07)); font-size: 11.5px; line-height: 1.75; color: var(--ar-dim,rgba(237,233,226,.45)); text-align: center; text-transform: none; font-style: normal; font-weight: 700; font-family: Manrope; border-radius: 10px"><u>
+          Akun demo — Karyawan <span style="color: var(--ar-gold,#C9A24A);">ekhy@arcorp.id</span><br>Pusat <span style="color: var(--ar-gold,#C9A24A);">owner@arcorp.id</span> · <span style="color: var(--ar-gold,#C9A24A);">consultant@arcorp.id</span> · <span style="color: var(--ar-gold,#C9A24A);">admin@arcorp.id</span><br>Kode verifikasi: 6 angka apa pun.
+        </u></div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ stepOtp }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="font-size:12.5px;line-height:1.6;color:var(--ar-dim,rgba(237,233,226,.5));margin-bottom:16px">Kode 6 angka dikirim ke <span style="color:var(--ar-gold,#C9A24A)">{{ loginId }}</span></div>
+        <input value="{{ otp }}" onChange="{{ onOtp }}" placeholder="••••••" style="width:100%;padding:15px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:22px;letter-spacing:.5em;text-align:center;font-family:'Cormorant Garamond',serif">
+        <button onClick="{{ verifyOtp }}" style="width:100%;margin-top:14px;padding:15px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Verifikasi &amp; Masuk</button>
+        <button onClick="{{ backToId }}" style="width:100%;margin-top:9px;padding:11px;background:none;border:none;color:var(--ar-dim,rgba(237,233,226,.45));font-size:11.5px;cursor:pointer">Ganti email / nomor</button>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ stepGps }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <span style="width:9px;height:9px;border-radius:50%;background:var(--ar-gold,#C9A24A);animation:arPulse 1.6s infinite"></span>
+          <span style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">Absensi otomatis berjalan</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ gpsSteps }}" as="s" hint-placeholder-count="4">
+            <div style="display:flex;justify-content:space-between;gap:12px;padding:12px 14px;background:var(--ar-surface2,rgba(255,255,255,.03));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:10px;font-size:12.5px">
+              <span style="color:var(--ar-dim,rgba(237,233,226,.5))">{{ s.label }}</span>
+              <span style="color:var(--ar-gold,#C9A24A);text-align:right">{{ s.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <button onClick="{{ finishLogin }}" style="width:100%;margin-top:16px;padding:15px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer">Masuk ke Aplikasi</button>
+      </div>
+      </sc-if>
+    </div>
+    <div style="text-align: center; margin-top: 18px; font-size: 10.5px; letter-spacing: .1em; color: var(--ar-faint,rgba(237,233,226,.3)); font-family: Helvetica">https://emanagementrecruitment-ekhy.github.io</div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isKaryawan }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;padding:24px 20px 60px;background:var(--ar-glow,radial-gradient(800px 500px at 50% 0%,rgba(229,196,102,.07),transparent 70%))">
+  <div style="max-width:1120px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--ar-line,rgba(255,255,255,.07))">
+    <div style="display:flex;align-items:center;gap:13px">
+      <img src="assets/ar-corp-logo.png" alt="AR Corp" style="width:42px;height:42px;object-fit:contain;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));background:#08080A">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:.34em;color:var(--ar-gold,#C9A24A);text-transform:uppercase">AR Corp</div>
+        <div style="font-size:10px;letter-spacing:.16em;color:var(--ar-dim,rgba(237,233,226,.4));margin-top:4px;text-transform:uppercase">Aplikasi Karyawan</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+      <span style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4))">Opsi Menu</span>
+      <button onClick="{{ navTab }}" style="{{ navTabStyle }}">A · Tab Bawah</button>
+      <button onClick="{{ navHub }}" style="{{ navHubStyle }}">B · Hub Grid</button>
+      <button onClick="{{ navRail }}" style="{{ navRailStyle }}">C · Rail Samping</button>
+      <button onClick="{{ logout }}" style="padding:9px 15px;background:none;border:1px solid var(--ar-line,rgba(255,255,255,.12));border-radius:9px;color:var(--ar-dim,rgba(237,233,226,.5));font-size:11px;cursor:pointer">Keluar</button>
+    </div>
+  </div>
+
+  <div style="max-width:1120px;margin:0 auto;padding-top:26px;display:flex;flex-wrap:wrap;gap:36px;justify-content:center">
+    <div style="width:392px;height:812px;flex:none;background:var(--ar-bg,#0C0C0F);border:9px solid var(--ar-bezel,#191920);border-radius:44px;box-shadow:0 40px 90px -34px rgba(0,0,0,.9),0 0 0 1px var(--ar-goldline,rgba(229,196,102,.18));overflow:hidden;display:flex;flex-direction:column">
+      <div style="height:34px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.5))">
+        <span>{{ clock }}</span>
+        <span style="display:flex;gap:7px"><span style="color:var(--ar-gold,#C9A24A)">GPS</span><span>4G</span><span>92%</span></span>
+      </div>
+
+      <div style="flex:1;display:flex;min-height:0">
+        <sc-if value="{{ isRail }}" hint-placeholder-val="{{ false }}">
+        <div style="width:68px;flex:none;border-right:1px solid var(--ar-line,rgba(255,255,255,.07));padding:10px 0;display:flex;flex-direction:column;gap:5px;align-items:center;background:var(--ar-surface2,rgba(255,255,255,.02))">
+          <sc-for list="{{ menu }}" as="m" hint-placeholder-count="5">
+            <button onClick="{{ m.go }}" style="{{ m.railStyle }}">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1">{{ m.mono }}</span>
+              <span style="font-size:7.5px;letter-spacing:.1em;text-transform:uppercase">{{ m.short }}</span>
+            </button>
+          </sc-for>
+        </div>
+        </sc-if>
+
+        <div class="arScroll" style="flex:1;min-width:0;overflow-y:auto;padding:4px 20px 24px">
+          <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goHome }}" style="margin:8px 0 10px;padding:8px 14px;background:var(--ar-surface2,rgba(255,255,255,.04));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:20px;color:var(--ar-dim,rgba(237,233,226,.7));font-size:11.5px;cursor:pointer">← Menu</button>
+          </sc-if>
+
+          <sc-if value="{{ tabBeranda }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="padding:12px 0 14px">
+              <div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4))">{{ greeting }}</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:29px;line-height:1.15;margin-top:5px">{{ meName }}</div>
+              <div style="display:inline-block;margin-top:9px;padding:5px 11px;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));border-radius:20px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">{{ meLevel }} · {{ meCode }}</div>
+            </div>
+
+            <div style="background:var(--ar-goldfill,rgba(229,196,102,.08));border:1px solid var(--ar-goldline,rgba(229,196,102,.28));border-radius:var(--ar-rad,16px);padding:var(--ar-pad,17px);margin-bottom:var(--ar-gap,13px)">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+                <div>
+                  <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.5))">Absensi hari ini</div>
+                  <div style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-top:4px;color:var(--ar-gold2,#F2DC9B)">Masuk {{ checkInTime }}</div>
+                </div>
+                <span style="{{ radiusBadgeStyle }}">{{ radiusLabel }}</span>
+              </div>
+              <div style="margin-top:13px;padding-top:13px;border-top:1px solid var(--ar-goldline,rgba(229,196,102,.18));display:grid;gap:7px;font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.55))">
+                <div style="display:flex;justify-content:space-between;gap:10px"><span>Lokasi</span><span style="color:var(--ar-text,#EDE9E2);text-align:right">{{ myPlace }}</span></div>
+                <div style="display:flex;justify-content:space-between;gap:10px"><span>Jarak dari pusat</span><span style="color:var(--ar-text,#EDE9E2)">{{ myDistance }} / 500 km</span></div>
+                <div style="display:flex;justify-content:space-between;gap:10px"><span>Koordinat</span><span style="color:var(--ar-text,#EDE9E2)">{{ myCoord }}</span></div>
+              </div>
+            </div>
+
+            <div style="background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px);padding:var(--ar-pad,18px);margin-bottom:var(--ar-gap,13px)">
+              <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">Saldo voucher belum dicairkan</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:38px;line-height:1.12;color:var(--ar-gold2,#F2DC9B);margin-top:5px">{{ mySaldo }}</div>
+              <div style="font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.5));margin-top:3px">{{ mySaldoCount }} voucher · pencairan {{ nextPayout }}</div>
+              <div style="display:flex;gap:8px;margin-top:14px">
+                <div style="flex:1;padding:11px 12px;background:var(--ar-surface2,rgba(255,255,255,.03));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:11px">
+                  <div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.42))">Silver</div>
+                  <div style="font-size:14px;margin-top:4px">{{ mySilverCount }} × 150K</div>
+                </div>
+                <div style="flex:1;padding:11px 12px;background:var(--ar-goldfill,rgba(229,196,102,.07));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:11px">
+                  <div style="font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">Platinum / Jasmine</div>
+                  <div style="font-size:14px;margin-top:4px">{{ myPlatCount }} × 400K</div>
+                </div>
+              </div>
+            </div>
+
+            <sc-if value="{{ isHub }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px">
+              <sc-for list="{{ hubMenu }}" as="m" hint-placeholder-count="4">
+                <button onClick="{{ m.go }}" style="display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:16px 15px;background:var(--ar-surface,#111114);border:1px solid var(--ar-goldline,rgba(229,196,102,.18));border-radius:15px;color:var(--ar-text,#EDE9E2);cursor:pointer;text-align:left">
+                  <span style="width:38px;height:38px;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.35));display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ar-gold,#C9A24A)">{{ m.mono }}</span>
+                  <span>
+                    <span style="display:block;font-size:13px">{{ m.label }}</span>
+                    <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:3px">{{ m.hint }}</span>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+            </sc-if>
+
+            <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4));margin:16px 0 10px">Aktivitas terakhir</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ myFeed }}" as="f" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px;align-items:flex-start;padding:12px 13px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.06));border-radius:12px">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--ar-gold,#C9A24A);margin-top:6px;flex:none"></span>
+                  <span style="flex:1;min-width:0">
+                    <span style="display:block;font-size:12.5px">{{ f.title }}</span>
+                    <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:3px">{{ f.meta }}</span>
+                  </span>
+                  <span style="font-size:11px;color:var(--ar-gold,#C9A24A);white-space:nowrap">{{ f.amount }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tabVoucher }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:26px;padding:12px 0 14px">Voucher Komisi</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:5px;background:var(--ar-surface2,rgba(255,255,255,.03));border-radius:11px;margin-bottom:14px">
+              <button onClick="{{ perHarian }}" style="{{ perHarianStyle }}">Harian</button>
+              <button onClick="{{ perMingguan }}" style="{{ perMingguanStyle }}">Mingguan</button>
+              <button onClick="{{ perBulanan }}" style="{{ perBulananStyle }}">Bulanan</button>
+            </div>
+            <div style="background:var(--ar-goldfill,rgba(229,196,102,.08));border:1px solid var(--ar-goldline,rgba(229,196,102,.24));border-radius:var(--ar-rad,15px);padding:var(--ar-pad,16px);margin-bottom:16px">
+              <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.5))">Pendapatan {{ periodLabel }}</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--ar-gold2,#F2DC9B);margin-top:4px">{{ myPeriodTotal }}</div>
+              <div style="font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.5));margin-top:3px">{{ myPeriodCount }} voucher · {{ periodRange }}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ myVouchers }}" as="v" hint-placeholder-count="5">
+                <div style="padding:13px 14px;background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:13px">
+                  <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start">
+                    <span style="flex:1;min-width:0">
+                      <span style="display:block;font-size:13px">{{ v.client }}</span>
+                      <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:4px">{{ v.dateLabel }} · {{ v.time }} · {{ v.code }}</span>
+                    </span>
+                    <span style="font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ar-gold2,#F2DC9B);white-space:nowrap">{{ v.amountLabel }}</span>
+                  </div>
+                  <div style="display:flex;gap:7px;margin-top:11px">
+                    <span style="{{ v.catStyle }}">{{ v.category }}</span>
+                    <span style="{{ v.statusStyle }}">{{ v.status }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ downloadMine }}" style="width:100%;margin-top:16px;padding:14px;background:var(--ar-goldfill,rgba(229,196,102,.1));border:1px solid var(--ar-goldline,rgba(229,196,102,.35));border-radius:12px;color:var(--ar-gold2,#F2DC9B);font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Unduh Rekap {{ periodLabel }} (CSV)</button>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tabKasbon }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:26px;padding:12px 0 6px">Pengajuan Kasbon</div>
+            <div style="font-size:11.5px;line-height:1.65;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:15px">Persetujuan hanya oleh Owner AR Corp. Kasbon dipotong dari pencairan voucher berikutnya.</div>
+            <div style="background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,15px);padding:var(--ar-pad,17px)">
+              <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:9px">Nominal</div>
+              <div style="display:flex;gap:7px;margin-bottom:10px">
+                <button onClick="{{ amt500 }}" style="flex:1;padding:9px;background:var(--ar-surface2,rgba(255,255,255,.04));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:9px;color:var(--ar-dim,rgba(237,233,226,.75));font-size:11.5px;cursor:pointer">500rb</button>
+                <button onClick="{{ amt1jt }}" style="flex:1;padding:9px;background:var(--ar-surface2,rgba(255,255,255,.04));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:9px;color:var(--ar-dim,rgba(237,233,226,.75));font-size:11.5px;cursor:pointer">1 jt</button>
+                <button onClick="{{ amt2jt }}" style="flex:1;padding:9px;background:var(--ar-surface2,rgba(255,255,255,.04));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:9px;color:var(--ar-dim,rgba(237,233,226,.75));font-size:11.5px;cursor:pointer">2 jt</button>
+              </div>
+              <input value="{{ kasAmount }}" onChange="{{ onKasAmount }}" placeholder="Rp 0" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:11px;color:var(--ar-gold2,#F2DC9B);font-size:18px;font-family:'Cormorant Garamond',serif">
+              <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin:15px 0 9px">Alasan</div>
+              <textarea value="{{ kasReason }}" onChange="{{ onKasReason }}" placeholder="Contoh: biaya transport klien Bandung" style="width:100%;min-height:76px;resize:vertical;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px;line-height:1.6"></textarea>
+              <div style="min-height:18px;font-size:11px;margin-top:7px;color:var(--ar-gold,#C9A24A)">{{ kasMsg }}</div>
+              <button onClick="{{ submitKasbon }}" style="width:100%;padding:14px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Ajukan ke Owner</button>
+            </div>
+            <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4));margin:20px 0 10px">Riwayat pengajuan</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ myKasbon }}" as="k" hint-placeholder-count="3">
+                <div style="padding:13px 14px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.06));border-radius:12px">
+                  <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+                    <span style="font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ar-gold2,#F2DC9B)">{{ k.amountLabel }}</span>
+                    <span style="{{ k.statusStyle }}">{{ k.status }}</span>
+                  </div>
+                  <div style="font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.55));margin-top:7px;line-height:1.55">{{ k.reason }}</div>
+                  <div style="font-size:10.5px;color:var(--ar-faint,rgba(237,233,226,.35));margin-top:6px">{{ k.dateLabel }} · {{ k.note }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tabLapor }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:26px;padding:12px 0 4px">Lapor Supervisor</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:14px"><span style="width:6px;height:6px;border-radius:50%;background:#7FD1A8"></span>Bayu Pratama · Supervisor Lapangan · online</div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding-bottom:12px">
+              <sc-for list="{{ chats }}" as="c" hint-placeholder-count="4">
+                <div style="{{ c.rowStyle }}">
+                  <span style="{{ c.bubbleStyle }}">
+                    <span style="display:block">{{ c.text }}</span>
+                    <span style="display:block;font-size:9.5px;opacity:.6;margin-top:5px">{{ c.time }}</span>
+                  </span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap;margin:6px 0 12px">
+              <sc-for list="{{ chatTemplates }}" as="t" hint-placeholder-count="3">
+                <button onClick="{{ t.use }}" style="padding:7px 12px;background:var(--ar-goldfill,rgba(229,196,102,.08));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:18px;color:var(--ar-gold,#C9A24A);font-size:10.5px;cursor:pointer">{{ t.text }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px">
+              <input value="{{ chatDraft }}" onChange="{{ onChatDraft }}" onKeyDown="{{ onChatKey }}" placeholder="Tulis laporan…" style="flex:1;min-width:0;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-goldline,rgba(229,196,102,.22));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px">
+              <button onClick="{{ sendChat }}" style="padding:13px 17px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Kirim</button>
+            </div>
+          </div>
+          </sc-if>
+
+          <sc-if value="{{ tabProfil }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div style="display:flex;align-items:center;gap:15px;padding:14px 0 18px">
+              <span style="width:62px;height:62px;flex:none;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.35));display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:25px;color:var(--ar-gold,#C9A24A)">{{ meMono }}</span>
+              <span>
+                <span style="display:block;font-family:'Cormorant Garamond',serif;font-size:24px">{{ meName }}</span>
+                <span style="display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-gold,#C9A24A);margin-top:5px">{{ meLevel }} · {{ meRole }}</span>
+              </span>
+            </div>
+            <div style="background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,15px);padding:4px 16px">
+              <sc-for list="{{ profileRows }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--ar-line,rgba(255,255,255,.05));font-size:12.5px">
+                  <span style="color:var(--ar-dim,rgba(237,233,226,.45))">{{ r.k }}</span>
+                  <span style="text-align:right">{{ r.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4));margin:20px 0 10px">Riwayat login &amp; lokasi</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ myLogins }}" as="l" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 13px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.06));border-radius:12px">
+                  <span>
+                    <span style="display:block;font-size:12.5px">{{ l.place }}</span>
+                    <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.4));margin-top:3px">{{ l.when }} · {{ l.km }}</span>
+                  </span>
+                  <span style="{{ l.badgeStyle }}">{{ l.status }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <button onClick="{{ logout }}" style="width:100%;margin:18px 0 6px;padding:14px;background:none;border:1px solid rgba(228,117,107,.35);border-radius:12px;color:#E4756B;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">Keluar &amp; Absen Pulang</button>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+
+      <sc-if value="{{ isTab }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:none;display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:8px 8px 14px;border-top:1px solid var(--ar-line,rgba(255,255,255,.07));background:var(--ar-surface2,rgba(255,255,255,.02))">
+        <sc-for list="{{ menu }}" as="m" hint-placeholder-count="5">
+          <button onClick="{{ m.go }}" style="{{ m.tabStyle }}">
+            <span style="font-family:'Cormorant Garamond',serif;font-size:17px;line-height:1">{{ m.mono }}</span>
+            <span style="font-size:8px;letter-spacing:.08em;text-transform:uppercase">{{ m.short }}</span>
+          </button>
+        </sc-for>
+      </div>
+      </sc-if>
+    </div>
+
+    <div style="width:304px;flex:none">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4));margin-bottom:13px">Opsi menu · perbandingan</div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <sc-for list="{{ navOptions }}" as="o" hint-placeholder-count="3">
+          <div style="{{ o.cardStyle }}">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ar-gold2,#F2DC9B)">{{ o.title }}</span>
+              <button onClick="{{ o.pick }}" style="{{ o.btnStyle }}">{{ o.btnLabel }}</button>
+            </div>
+            <div style="font-size:11.5px;line-height:1.65;color:var(--ar-dim,rgba(237,233,226,.5));margin-top:8px">{{ o.desc }}</div>
+            <div style="font-size:10.5px;line-height:1.6;color:var(--ar-gold,#C9A24A);margin-top:7px">{{ o.best }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:16px;padding:15px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:14px;font-size:11.5px;line-height:1.7;color:var(--ar-dim,rgba(237,233,226,.45))">
+        Semua data pada prototipe ini tersimpan di perangkat, jadi bisa langsung dicoba. Untuk pemantauan real-time lintas perangkat, satu server bersama tetap dibutuhkan — catatannya ada di dashboard pusat.
+      </div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isPusat }}" hint-placeholder-val="{{ false }}">
+<div style="min-height:100vh;display:flex">
+  <div style="width:240px;flex:none;border-right:1px solid var(--ar-line,rgba(255,255,255,.07));padding:24px 16px;display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:center;gap:12px;padding:0 6px">
+      <img src="assets/ar-corp-logo.png" alt="AR Corp" style="width:40px;height:40px;object-fit:contain;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));background:#08080A">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:12.5px;letter-spacing:.3em;color:var(--ar-gold,#C9A24A);text-transform:uppercase">AR Corp</div>
+        <div style="font-size:9.5px;letter-spacing:.14em;color:var(--ar-dim,rgba(237,233,226,.4));margin-top:4px;text-transform:uppercase">Kantor Pusat</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <sc-for list="{{ deskMenu }}" as="d" hint-placeholder-count="5">
+        <button onClick="{{ d.go }}" style="{{ d.style }}">
+          <span>{{ d.label }}</span>
+          <span style="{{ d.countStyle }}">{{ d.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="margin-top:auto;padding:14px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:12px">
+      <div style="font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4))">Masuk sebagai</div>
+      <div style="font-size:13px;margin-top:6px">Owner AR Corp</div>
+      <div style="font-size:10.5px;color:var(--ar-gold,#C9A24A);margin-top:3px">Akses penuh · dapat approve</div>
+      <button onClick="{{ logout }}" style="width:100%;margin-top:11px;padding:9px;background:none;border:1px solid var(--ar-line,rgba(255,255,255,.12));border-radius:9px;color:var(--ar-dim,rgba(237,233,226,.5));font-size:10.5px;cursor:pointer">Keluar</button>
+    </div>
+  </div>
+
+  <div class="arScroll" style="flex:1;min-width:0;overflow-y:auto;padding:26px 32px 60px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--ar-line,rgba(255,255,255,.07))">
+      <div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:32px;line-height:1.1">{{ deskTitle }}</div>
+        <div style="font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:6px">{{ deskSubtitle }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--ar-goldfill,rgba(229,196,102,.07));border:1px solid var(--ar-goldline,rgba(229,196,102,.24));border-radius:11px">
+        <span style="width:8px;height:8px;border-radius:50%;background:#7FD1A8;animation:arPulse 1.8s infinite"></span>
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">{{ onlineCount }} aktif · {{ clock }}</span>
+      </div>
+    </div>
+
+    <sc-if value="{{ deskRingkasan }}" hint-placeholder-val="{{ true }}">
+    <div style="padding-top:22px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--ar-gap,14px)">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div style="padding:var(--ar-pad,18px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,15px)">
+            <div style="font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.42))">{{ k.label }}</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--ar-gold2,#F2DC9B);margin-top:6px;line-height:1.1">{{ k.value }}</div>
+            <div style="font-size:11px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:4px">{{ k.sub }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-top:16px">
+        <div style="padding:var(--ar-pad,20px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px)">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px">
+            <span style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">Notifikasi login karyawan</span>
+            <span style="font-size:10.5px;color:var(--ar-gold,#C9A24A)">real-time</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <sc-for list="{{ loginFeed }}" as="l" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:13px;padding:12px 13px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.06));border-radius:12px">
+                <span style="width:34px;height:34px;flex:none;border-radius:50%;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));display:grid;place-items:center;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--ar-gold,#C9A24A)">{{ l.mono }}</span>
+                <span style="flex:1;min-width:0">
+                  <span style="display:block;font-size:13px">{{ l.name }}</span>
+                  <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:3px">{{ l.detail }}</span>
+                </span>
+                <span style="{{ l.badgeStyle }}">{{ l.status }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:var(--ar-pad,20px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px);display:flex;flex-direction:column">
+          <div style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:14px">Voucher 14 hari terakhir</div>
+          <div style="display:flex;align-items:flex-end;gap:5px;height:150px;padding-bottom:2px">
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="14">
+              <span style="{{ b.style }}" title="{{ b.title }}"></span>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ar-faint,rgba(237,233,226,.35));margin-top:9px;padding-top:9px;border-top:1px solid var(--ar-line,rgba(255,255,255,.06))">
+            <span>{{ barsFrom }}</span><span>{{ barsTo }}</span>
+          </div>
+          <div style="margin-top:auto;padding-top:14px;display:grid;gap:7px;font-size:11.5px;color:var(--ar-dim,rgba(237,233,226,.5))">
+            <div style="display:flex;justify-content:space-between"><span>Silver (150.000)</span><span style="color:var(--ar-text,#EDE9E2)">{{ silverAll }} voucher</span></div>
+            <div style="display:flex;justify-content:space-between"><span>Platinum / Jasmine (400.000)</span><span style="color:var(--ar-text,#EDE9E2)">{{ platAll }} voucher</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskLokasi }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px;display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px">
+      <div style="padding:var(--ar-pad,20px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px)">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px">
+          <span style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">Sebaran lokasi absensi · radius 500 km</span>
+          <span style="font-size:10.5px;color:var(--ar-faint,rgba(237,233,226,.35))">peta interaktif · geser &amp; zoom</span>
+        </div>
+        <div style="position:relative;height:392px;border-radius:14px;border:1px solid var(--ar-line,rgba(255,255,255,.07));background:var(--ar-surface2,rgba(255,255,255,.02));overflow:hidden">
+          <iframe src="map.html" loading="lazy" title="Peta lokasi absensi" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block"></iframe>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ presence }}" as="p" hint-placeholder-count="6">
+          <div style="padding:14px;background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:13px">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center">
+              <span style="font-size:13px">{{ p.name }}</span>
+              <span style="{{ p.badgeStyle }}">{{ p.status }}</span>
+            </div>
+            <div style="font-size:11px;color:var(--ar-dim,rgba(237,233,226,.45));margin-top:6px;line-height:1.6">{{ p.place }} · {{ p.km }}<br>Login {{ p.time }} · {{ p.coord }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskKaryawan }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px">
+      <div style="background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px);overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.6fr 1fr 1.5fr .9fr .9fr 1.1fr;gap:12px;padding:13px 18px;background:var(--ar-surface2,rgba(255,255,255,.03));font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">
+          <span>Karyawan</span><span>Level</span><span>Kontak</span><span>Voucher</span><span>Kasbon</span><span>Pendapatan 30 hari</span>
+        </div>
+        <sc-for list="{{ empRows }}" as="e" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1.5fr .9fr .9fr 1.1fr;gap:12px;padding:15px 18px;border-top:1px solid var(--ar-line,rgba(255,255,255,.05));font-size:12.5px;align-items:center">
+            <span>
+              <span style="display:block">{{ e.name }}</span>
+              <span style="display:block;font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.4));margin-top:3px">{{ e.code }} · {{ e.role }}</span>
+            </span>
+            <span style="{{ e.levelStyle }}">{{ e.level }}</span>
+            <span style="font-size:11px;color:var(--ar-dim,rgba(237,233,226,.5));line-height:1.6">{{ e.email }}<br>{{ e.phone }}</span>
+            <span>{{ e.count }}</span>
+            <span style="{{ e.kasStyle }}">{{ e.kasbon }}</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ar-gold2,#F2DC9B)">{{ e.total }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:14px;padding:16px 18px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:14px;font-size:11.5px;line-height:1.75;color:var(--ar-dim,rgba(237,233,226,.5))">
+        Hak akses: hanya <span style="color:var(--ar-gold,#C9A24A)">Owner</span> dan <span style="color:var(--ar-gold,#C9A24A)">Consultant</span> yang dapat mengubah data karyawan, nilai voucher, dan menyetujui kasbon. Admin pusat hanya melihat dan mengunduh laporan.
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskKasbon }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px;display:flex;flex-direction:column;gap:11px">
+      <sc-for list="{{ allKasbon }}" as="k" hint-placeholder-count="4">
+        <div style="padding:var(--ar-pad,18px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,15px);display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
+          <div style="min-width:210px">
+            <div style="font-size:13.5px">{{ k.name }}</div>
+            <div style="font-size:10.5px;color:var(--ar-dim,rgba(237,233,226,.42));margin-top:4px">{{ k.code }} · {{ k.dateLabel }}</div>
+          </div>
+          <div style="flex:1;min-width:220px;font-size:12px;line-height:1.6;color:var(--ar-dim,rgba(237,233,226,.55))">{{ k.reason }}</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--ar-gold2,#F2DC9B);min-width:130px">{{ k.amountLabel }}</div>
+          <div style="display:flex;gap:8px;align-items:center;min-width:230px;justify-content:flex-end">
+            <sc-if value="{{ k.pending }}" hint-placeholder-val="{{ true }}">
+            <span style="display:flex;gap:8px">
+              <button onClick="{{ k.approve }}" style="padding:10px 16px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:9px;color:var(--ar-ongold,#1A1408);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Setujui</button>
+              <button onClick="{{ k.reject }}" style="padding:10px 16px;background:none;border:1px solid rgba(228,117,107,.4);border-radius:9px;color:#E4756B;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">Tolak</button>
+            </span>
+            </sc-if>
+            <sc-if value="{{ k.decided }}" hint-placeholder-val="{{ false }}">
+            <span style="{{ k.statusStyle }}">{{ k.status }}</span>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+      <div style="padding:16px 18px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:14px;font-size:11.5px;line-height:1.7;color:var(--ar-dim,rgba(237,233,226,.5))">
+        Setiap keputusan tercatat dengan nama pemberi persetujuan dan waktunya. Nominal yang disetujui otomatis dipotong dari pencairan voucher berikutnya.
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskLaporan }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div style="display:flex;gap:6px;padding:5px;background:var(--ar-surface2,rgba(255,255,255,.03));border-radius:11px">
+          <button onClick="{{ perHarian }}" style="{{ perHarianStyle }}">Harian</button>
+          <button onClick="{{ perMingguan }}" style="{{ perMingguanStyle }}">Mingguan</button>
+          <button onClick="{{ perBulanan }}" style="{{ perBulananStyle }}">Bulanan</button>
+        </div>
+        <button onClick="{{ downloadAll }}" style="padding:12px 20px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:10px;color:var(--ar-ongold,#1A1408);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Unduh CSV · {{ periodLabel }}</button>
+      </div>
+      <div style="background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px);overflow:hidden">
+        <div style="display:grid;grid-template-columns:1.7fr .9fr .8fr .8fr 1fr 1fr;gap:12px;padding:13px 18px;background:var(--ar-surface2,rgba(255,255,255,.03));font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">
+          <span>Karyawan</span><span>Level</span><span>Silver</span><span>Platinum</span><span>Kasbon</span><span>Diterima</span>
+        </div>
+        <sc-for list="{{ reportRows }}" as="r" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:1.7fr .9fr .8fr .8fr 1fr 1fr;gap:12px;padding:15px 18px;border-top:1px solid var(--ar-line,rgba(255,255,255,.05));font-size:12.5px;align-items:center">
+            <span>{{ r.name }}</span>
+            <span style="{{ r.levelStyle }}">{{ r.level }}</span>
+            <span>{{ r.silver }}</span>
+            <span>{{ r.plat }}</span>
+            <span style="color:#E4756B">{{ r.kasbon }}</span>
+            <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--ar-gold2,#F2DC9B)">{{ r.net }}</span>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:1.7fr .9fr .8fr .8fr 1fr 1fr;gap:12px;padding:16px 18px;border-top:1px solid var(--ar-goldline,rgba(229,196,102,.25));background:var(--ar-goldfill,rgba(229,196,102,.06));font-size:12.5px;align-items:center">
+          <span style="letter-spacing:.14em;text-transform:uppercase;font-size:10.5px;color:var(--ar-gold,#C9A24A)">Total {{ periodLabel }}</span>
+          <span></span>
+          <span>{{ totalSilver }}</span>
+          <span>{{ totalPlat }}</span>
+          <span style="color:#E4756B">{{ totalKasbon }}</span>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--ar-gold2,#F2DC9B)">{{ totalNet }}</span>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:16px 18px;background:var(--ar-surface2,rgba(255,255,255,.025));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:14px;font-size:11.5px;line-height:1.75;color:var(--ar-dim,rgba(237,233,226,.5))">
+        File CSV terbuka di Excel dan Google Sheets. Isi kolom: tanggal, kode karyawan, nama, level, kategori voucher, nilai, klien, status pencairan.
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskVoucher }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:var(--ar-gap,15px);align-items:start">
+
+      <div style="display:flex;flex-direction:column;gap:var(--ar-gap,15px)">
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-goldline,rgba(229,196,102,.24));border-radius:var(--ar-rad,17px)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">{{ vfFormTitle }}</div>
+            <span style="{{ whoStyle }}">{{ whoLabel }}</span>
+          </div>
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:7px">Karyawan</label>
+          <select value="{{ vfEmp }}" onChange="{{ onVfEmp }}" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px;appearance:none">
+            <sc-for list="{{ vfEmpOptions }}" as="o" hint-placeholder-count="6">
+              <option value="{{ o.value }}">{{ o.label }}</option>
+            </sc-for>
+          </select>
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin:14px 0 7px">Kategori voucher</label>
+          <select value="{{ vfCat }}" onChange="{{ onVfCat }}" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px;appearance:none">
+            <sc-for list="{{ vfCatOptions }}" as="o" hint-placeholder-count="3">
+              <option value="{{ o.value }}">{{ o.label }}</option>
+            </sc-for>
+          </select>
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin:14px 0 7px">Klien atau nomor transaksi</label>
+          <input value="{{ vfClient }}" onChange="{{ onVfClient }}" placeholder="Contoh: Kirana Lounge · TRX-2291" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px" style-focus="border-color:var(--ar-gold,#C9A24A)">
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin:14px 0 7px">Nominal</label>
+          <input value="{{ vfAmount }}" onChange="{{ onVfAmount }}" disabled="{{ vfAmountLocked }}" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-gold2,#F2DC9B);font-family:'Cormorant Garamond',serif;font-size:20px" style-focus="border-color:var(--ar-gold,#C9A24A)">
+          <div style="font-size:11px;line-height:1.6;color:var(--ar-faint,rgba(237,233,226,.32));margin-top:8px">{{ vfCatHint }}</div>
+
+          <div style="{{ vfMsgStyle }}">{{ vfMsg }}</div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:12px">
+            <button onClick="{{ vfSubmit }}" style="flex:1 1 160px;padding:14px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">{{ vfSubmitLabel }}</button>
+            <sc-if value="{{ vfEditing }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ vfCancel }}" style="flex:1 1 110px;padding:14px;background:none;border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-dim,rgba(237,233,226,.55));font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Batal</button>
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px)">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A);margin-bottom:13px">Hari ini</div>
+          <div style="display:flex;gap:22px;flex-wrap:wrap">
+            <div>
+              <div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-faint,rgba(237,233,226,.32))">Voucher masuk</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:27px;color:var(--ar-text,#EDE9E2);line-height:1.2;margin-top:3px">{{ vfTodayCount }}</div>
+            </div>
+            <div>
+              <div style="font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-faint,rgba(237,233,226,.32))">Nilai total</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:27px;color:var(--ar-gold2,#F2DC9B);line-height:1.2;margin-top:3px">{{ vfTodayTotal }}</div>
+            </div>
+          </div>
+          <div style="font-size:11.5px;line-height:1.7;color:var(--ar-dim,rgba(237,233,226,.5));margin-top:14px;padding-top:13px;border-top:1px solid var(--ar-line,rgba(255,255,255,.07))">{{ vfRoleHint }}</div>
+        </div>
+      </div>
+
+      <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">Voucher tercatat</div>
+          <input value="{{ vfQuery }}" onChange="{{ onVfQuery }}" placeholder="Cari klien, karyawan, kode" style="flex:1 1 190px;max-width:260px;padding:10px 13px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:10px;color:var(--ar-text,#EDE9E2);font-size:12px" style-focus="border-color:var(--ar-gold,#C9A24A)">
+        </div>
+
+        <div class="arScroll" style="display:flex;flex-direction:column;gap:9px;max-height:640px;overflow-y:auto;padding-right:4px">
+          <sc-for list="{{ vfRows }}" as="v" hint-placeholder-count="8">
+            <div style="padding:14px 15px;background:var(--ar-surface2,rgba(255,255,255,.028));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:13px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <div style="min-width:0;flex:1 1 180px">
+                  <div style="font-size:13.5px;color:var(--ar-text,#EDE9E2)">{{ v.client }}</div>
+                  <div style="font-size:11px;color:var(--ar-dim,rgba(237,233,226,.45));margin-top:3px">{{ v.empName }} · {{ v.meta }}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                  <span style="{{ v.catStyle }}">{{ v.category }}</span>
+                  <span style="font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ar-gold2,#F2DC9B)">{{ v.amountLabel }}</span>
+                  <span style="{{ v.statusStyle }}">{{ v.status }}</span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:11px;border-top:1px solid var(--ar-line,rgba(255,255,255,.06))">
+                <span style="font-size:10.5px;font-family:ui-monospace,Menlo,monospace;color:var(--ar-faint,rgba(237,233,226,.32))">{{ v.id }}</span>
+                <div style="{{ v.actionsStyle }}">
+                  <button onClick="{{ v.edit }}" style="padding:8px 14px;background:none;border:1px solid var(--ar-goldline,rgba(229,196,102,.28));border-radius:9px;color:var(--ar-gold,#C9A24A);font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:var(--ar-goldfill,rgba(229,196,102,.07))">Revisi</button>
+                  <button onClick="{{ v.pay }}" style="padding:8px 14px;background:none;border:1px solid rgba(127,209,168,.3);border-radius:9px;color:#7FD1A8;font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:rgba(127,209,168,.09)">{{ v.payLabel }}</button>
+                  <button onClick="{{ v.remove }}" style="padding:8px 14px;background:none;border:1px solid rgba(228,117,107,.3);border-radius:9px;color:#E4756B;font-size:10px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:rgba(228,117,107,.08)">Hapus</button>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ deskServer }}" hint-placeholder-val="{{ false }}">
+    <div style="padding-top:22px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:var(--ar-gap,15px);align-items:start">
+
+      <div style="display:flex;flex-direction:column;gap:var(--ar-gap,15px)">
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-goldline,rgba(229,196,102,.24));border-radius:var(--ar-rad,17px)">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+            <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A)">Status koneksi</div>
+            <span style="{{ srvPillStyle }}">{{ srvPill }}</span>
+          </div>
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin-bottom:7px">Project URL</label>
+          <input value="{{ srvUrl }}" onChange="{{ onSrvUrl }}" placeholder="https://xxxxxxxx.supabase.co" style="width:100%;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:13px" style-focus="border-color:var(--ar-gold,#C9A24A)">
+
+          <label style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45));margin:14px 0 7px">Anon public key</label>
+          <textarea value="{{ srvKey }}" onChange="{{ onSrvKey }}" placeholder="eyJhbGciOi…" style="width:100%;min-height:74px;resize:vertical;padding:13px 14px;background:var(--ar-input,rgba(0,0,0,.4));border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-text,#EDE9E2);font-size:12px;font-family:ui-monospace,Menlo,monospace;line-height:1.6;word-break:break-all" style-focus="border-color:var(--ar-gold,#C9A24A)"></textarea>
+
+          <div style="{{ srvMsgStyle }}">{{ srvMsg }}</div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:14px">
+            <button onClick="{{ srvConnect }}" style="flex:1 1 170px;padding:14px;background:var(--ar-grad,linear-gradient(100deg,#C9A24A,#F2DC9B 52%,#C9A24A));border:none;border-radius:11px;color:var(--ar-ongold,#1A1408);font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;cursor:pointer">{{ srvConnectLabel }}</button>
+            <sc-if value="{{ srvOn }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ srvSeed }}" style="flex:1 1 150px;padding:14px;background:var(--ar-goldfill,rgba(229,196,102,.07));border:1px solid var(--ar-goldline,rgba(229,196,102,.28));border-radius:11px;color:var(--ar-gold,#C9A24A);font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Kirim Data Karyawan</button>
+            </sc-if>
+          </div>
+
+          <sc-if value="{{ srvOn }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:9px">
+              <button onClick="{{ srvSyncNow }}" style="flex:1 1 140px;padding:12px;background:none;border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-dim,rgba(237,233,226,.55));font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--ar-goldline,rgba(229,196,102,.3));color:var(--ar-gold,#C9A24A)">Segarkan Sekarang</button>
+              <button onClick="{{ srvDisconnect }}" style="flex:1 1 140px;padding:12px;background:none;border:1px solid rgba(228,117,107,.3);border-radius:11px;color:#E4756B;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:rgba(228,117,107,.08)">Lepas Koneksi</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px)">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A);margin-bottom:14px">Tabel di server</div>
+          <div style="display:flex;flex-direction:column;gap:1px;border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:12px;overflow:hidden">
+            <sc-for list="{{ srvTables }}" as="r" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 15px;background:var(--ar-surface2,rgba(255,255,255,.028))">
+                <div style="min-width:0">
+                  <div style="font-size:12.5px;color:var(--ar-text,#EDE9E2)">{{ r.label }}</div>
+                  <div style="font-size:10.5px;font-family:ui-monospace,Menlo,monospace;color:var(--ar-faint,rgba(237,233,226,.32));margin-top:2px">{{ r.name }}</div>
+                </div>
+                <span style="{{ r.countStyle }}">{{ r.count }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:13px;font-size:11px;color:var(--ar-dim,rgba(237,233,226,.45))">
+            <span>{{ srvSyncedLabel }}</span>
+            <span>{{ srvQueueLabel }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--ar-gap,15px)">
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px)">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A);margin-bottom:15px">Empat langkah, sekali saja</div>
+          <div style="display:flex;flex-direction:column;gap:13px">
+            <sc-for list="{{ srvSteps }}" as="s" hint-placeholder-count="4">
+              <div style="display:flex;gap:12px;align-items:flex-start">
+                <span style="flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--ar-goldline,rgba(229,196,102,.3));color:var(--ar-gold,#C9A24A);font-size:11px;font-weight:700">{{ s.n }}</span>
+                <span style="font-size:12.5px;line-height:1.65;color:var(--ar-dim,rgba(237,233,226,.62))">{{ s.t }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px)">
+          <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ar-gold,#C9A24A);margin-bottom:10px">SQL skema database</div>
+          <div style="font-size:12px;line-height:1.7;color:var(--ar-dim,rgba(237,233,226,.5));margin-bottom:14px">Lima tabel: karyawan, absensi, voucher, kasbon, laporan. Tempel sekali di Supabase SQL Editor.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px">
+            <button onClick="{{ copySql }}" style="flex:1 1 130px;padding:13px;background:var(--ar-goldfill,rgba(229,196,102,.07));border:1px solid var(--ar-goldline,rgba(229,196,102,.28));border-radius:11px;color:var(--ar-gold,#C9A24A);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;cursor:pointer">Salin SQL</button>
+            <button onClick="{{ downloadSql }}" style="flex:1 1 130px;padding:13px;background:none;border:1px solid var(--ar-line,rgba(255,255,255,.09));border-radius:11px;color:var(--ar-dim,rgba(237,233,226,.55));font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--ar-goldline,rgba(229,196,102,.3));color:var(--ar-gold,#C9A24A)">Unduh .sql</button>
+          </div>
+          <div style="{{ srvCopiedStyle }}">{{ srvCopied }}</div>
+        </div>
+
+        <div style="padding:var(--ar-pad,19px);background:var(--ar-surface2,rgba(255,255,255,.028));border:1px solid var(--ar-line,rgba(255,255,255,.07));border-radius:var(--ar-rad,17px);font-size:11.5px;line-height:1.8;color:var(--ar-dim,rgba(237,233,226,.5))">
+          Selama server belum tersambung, aplikasi tetap berjalan penuh dengan data lokal di perangkat masing-masing. Setelah tersambung, absensi, kasbon, dan laporan terbaca di semua perangkat, dan aksi yang dibuat saat sinyal hilang otomatis terkirim ulang.
+        </div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+</div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mood&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Onyx&quot;,&quot;Midnight&quot;,&quot;Ivory&quot;],&quot;default&quot;:&quot;Onyx&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Suasana&quot;,&quot;label&quot;:&quot;Suasana&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;options&quot;:[&quot;#C9A24A&quot;,&quot;#B76E79&quot;,&quot;#8FA98C&quot;,&quot;#9AA7C7&quot;],&quot;default&quot;:&quot;#C9A24A&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Suasana&quot;,&quot;label&quot;:&quot;Warna aksen&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Lapang&quot;,&quot;Padat&quot;],&quot;default&quot;:&quot;Lapang&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Suasana&quot;,&quot;label&quot;:&quot;Kepadatan&quot;}}">
+const HQ = { lat: -6.2088, lng: 106.8456 };
+const RADIUS = 500;
+const EMP = [
+  { id:'ar01', name:'Ekhy Ramadhan', code:'AR-01', level:'Platinum', role:'Konsultan Lapangan', email:'ekhy@arcorp.id', phone:'0812 3345 8890', place:'Jakarta Selatan', lat:-6.2615, lng:106.8106, t:'08:12' },
+  { id:'ar02', name:'Dewi Anggraeni', code:'AR-02', level:'Silver', role:'Konsultan Lapangan', email:'dewi@arcorp.id', phone:'0813 8890 2211', place:'Bandung', lat:-6.9175, lng:107.6191, t:'08:47' },
+  { id:'ar03', name:'Bayu Pratama', code:'AR-03', level:'Platinum', role:'Supervisor Lapangan', email:'bayu@arcorp.id', phone:'0811 2244 7788', place:'Bekasi', lat:-6.2383, lng:106.9756, t:'07:55' },
+  { id:'ar04', name:'Sinta Maharani', code:'AR-04', level:'Silver', role:'Konsultan Lapangan', email:'sinta@arcorp.id', phone:'0857 4412 9003', place:'Semarang', lat:-6.9667, lng:110.4167, t:'09:20' },
+  { id:'ar05', name:'Fajar Nugroho', code:'AR-05', level:'Platinum', role:'Konsultan Lapangan', email:'fajar@arcorp.id', phone:'0812 7781 4455', place:'Surabaya', lat:-7.2575, lng:112.7521, t:'09:38' },
+  { id:'ar06', name:'Lia Kusuma', code:'AR-06', level:'Silver', role:'Konsultan Lapangan', email:'lia@arcorp.id', phone:'0895 6620 1177', place:'Yogyakarta', lat:-7.7956, lng:110.3695, t:'10:05' }
+];
+const CLIENTS = ['Kirana Lounge','Aster Group','Hotel Mahameru','Bellagio Club','Sapphire Karaoke','PT Nusa Cemerlang','Villa Anggrek','The Onyx Room','Kencana Resto','Zafira Event'];
+const HQ_NAME = 'Kantor Pusat — Jakarta';
+
+function catAmount(c){ return c === 'Silver' ? 150000 : 400000; }
+function seeded(i){ const x = Math.sin(i * 12.9898) * 43758.5453; return x - Math.floor(x); }
+function km(a, b){
+  const R = 6371, dLat = (b.lat-a.lat)*Math.PI/180, dLng = (b.lng-a.lng)*Math.PI/180;
+  const s = Math.sin(dLat/2)**2 + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)**2;
+  return Math.round(2*R*Math.asin(Math.sqrt(s)));
+}
+function fmt(n){ return 'Rp ' + Math.round(n).toLocaleString('id-ID'); }
+function shortRp(n){
+  if (n >= 1e9) return 'Rp ' + (n/1e9).toFixed(1).replace('.', ',') + ' M';
+  if (n >= 1e6) return 'Rp ' + (n/1e6).toFixed(1).replace('.', ',') + ' jt';
+  if (n >= 1e3) return 'Rp ' + Math.round(n/1e3) + 'rb';
+  return fmt(n);
+}
+const DAYNAMES = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const MONTHS = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+function dayKey(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function dLabel(d){ return d.getDate()+' '+MONTHS[d.getMonth()]; }
+
+function buildVouchers(){
+  const out = [], now = new Date();
+  let n = 0;
+  for (let back = 0; back < 32; back++){
+    const day = new Date(now); day.setDate(now.getDate() - back); day.setHours(0,0,0,0);
+    EMP.forEach((e, ei) => {
+      const r = seeded(back * 17 + ei * 7 + 1);
+      const count = r > 0.72 ? 3 : r > 0.42 ? 2 : r > 0.16 ? 1 : 0;
+      for (let c = 0; c < count; c++){
+        n++;
+        const rr = seeded(n * 3.7);
+        const plat = e.level === 'Platinum' ? rr > 0.42 : rr > 0.78;
+        const dt = new Date(day); dt.setHours(11 + Math.floor(rr*11), Math.floor(seeded(n*5.1)*59));
+        out.push({
+          id: 'V' + String(1000 + n),
+          emp: e.id, empName: e.name, code: e.code, level: e.level,
+          category: plat ? 'Platinum / Jasmine' : 'Silver',
+          amount: plat ? 400000 : 150000,
+          client: CLIENTS[Math.floor(seeded(n*8.3) * CLIENTS.length)],
+          date: dt,
+          status: back > 6 ? 'Dicairkan' : back > 0 ? 'Tervalidasi' : 'Menunggu validasi'
+        });
+      }
+    });
+  }
+  return out.sort((a,b) => b.date - a.date);
+}
+
+const SEED_KASBON = [
+  { id:'K1', emp:'ar01', amount:1500000, reason:'Biaya transport dan akomodasi klien Bandung 3 hari.', at: Date.now() - 864e5*2, status:'Menunggu Owner', note:'Belum ditinjau' },
+  { id:'K2', emp:'ar02', amount:750000, reason:'Perpanjangan STNK motor operasional.', at: Date.now() - 864e5*6, status:'Disetujui', note:'Disetujui Owner · dipotong pencairan 5 Sep' },
+  { id:'K3', emp:'ar04', amount:2500000, reason:'Renovasi rumah.', at: Date.now() - 864e5*11, status:'Ditolak', note:'Ditolak Owner · di luar kebutuhan operasional' },
+  { id:'K4', emp:'ar05', amount:1000000, reason:'Uang muka sewa kendaraan untuk event Surabaya.', at: Date.now() - 864e5*1, status:'Menunggu Owner', note:'Belum ditinjau' }
+];
+const SEED_CHATS = [
+  { me:false, text:'Selamat pagi Ekhy, hari ini prioritas kunjungan ke Kirana Lounge ya.', t:'07:40' },
+  { me:true, text:'Siap Pak. Saya sudah absen dari Jakarta Selatan, langsung ke lokasi.', t:'08:14' },
+  { me:true, text:'Kirana Lounge closing 1 paket Platinum. Voucher sudah saya input.', t:'13:26' },
+  { me:false, text:'Bagus. Nanti kirim foto bukti serah terima ke grup.', t:'13:31' }
+];
+
+const TABS = [
+  { k:'beranda', label:'Beranda', short:'Home', mono:'B', hint:'Absensi & saldo' },
+  { k:'voucher', label:'Voucher', short:'Voucher', mono:'V', hint:'Komisi harian' },
+  { k:'kasbon', label:'Kasbon', short:'Kasbon', mono:'K', hint:'Ajukan ke owner' },
+  { k:'lapor', label:'Lapor', short:'Lapor', mono:'L', hint:'Ke supervisor' },
+  { k:'profil', label:'Profil', short:'Profil', mono:'P', hint:'Data & riwayat' }
+];
+const DESKS = [
+  { k:'ringkasan', label:'Ringkasan', title:'Ringkasan Operasional', sub:'Aktivitas login, absensi, dan voucher komisi hari ini' },
+  { k:'lokasi', label:'Lokasi & Absensi', title:'Lokasi & Absensi', sub:'Posisi terakhir setiap karyawan terhadap radius 500 km dari kantor pusat' },
+  { k:'karyawan', label:'Karyawan', title:'Data Karyawan', sub:'6 karyawan terdaftar · login dengan email atau nomor HP' },
+  { k:'voucher', label:'Input Voucher', title:'Input Voucher Komisi', sub:'Seluruh voucher dimasukkan admin pusat · revisi oleh Owner dan Consultant' },
+  { k:'kasbon', label:'Kasbon', title:'Persetujuan Kasbon', sub:'Hanya Owner yang dapat menyetujui atau menolak' },
+  { k:'laporan', label:'Laporan', title:'Rekap Pendapatan', sub:'Harian, mingguan, bulanan — dapat diunduh sebagai CSV' },
+  { k:'server', label:'Server', title:'Koneksi Server', sub:'Hubungkan ke database Supabase agar data terbaca di semua perangkat' }
+];
+
+const THEMES = {
+  Onyx: { bg:'#08080A', bezel:'#191920', surface:'#111114', surface2:'rgba(255,255,255,.03)', line:'rgba(255,255,255,.08)', text:'#EDE9E2', dim:'rgba(237,233,226,.5)', faint:'rgba(237,233,226,.32)', input:'rgba(0,0,0,.42)', glow:'radial-gradient(900px 520px at 50% -5%,rgba(229,196,102,.09),transparent 70%)' },
+  Midnight: { bg:'#070B14', bezel:'#141B2B', surface:'#0F1523', surface2:'rgba(160,190,255,.045)', line:'rgba(170,200,255,.12)', text:'#E7EBF3', dim:'rgba(231,235,243,.52)', faint:'rgba(231,235,243,.33)', input:'rgba(0,0,0,.4)', glow:'radial-gradient(900px 520px at 50% -5%,rgba(120,160,255,.10),transparent 70%)' },
+  Ivory: { bg:'#F3F0E9', bezel:'#DCD5C6', surface:'#FFFFFF', surface2:'rgba(0,0,0,.028)', line:'rgba(0,0,0,.10)', text:'#1B1710', dim:'rgba(27,23,16,.58)', faint:'rgba(27,23,16,.38)', input:'rgba(0,0,0,.035)', glow:'radial-gradient(900px 520px at 50% -5%,rgba(180,145,60,.14),transparent 70%)' }
+};
+const ACCENTS = {
+  '#C9A24A': { name:'Emas AR Corp', bright:'#F2DC9B', on:'#1A1408' },
+  '#B76E79': { name:'Rose Gold', bright:'#EFC3CA', on:'#1E0E11' },
+  '#8FA98C': { name:'Sage', bright:'#CFE0CC', on:'#0F150E' },
+  '#9AA7C7': { name:'Platina', bright:'#DCE3F3', on:'#0D1017' }
+};
+
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('arcorp-hr-v1') || '{}') || {}; } catch(e){ saved = {}; }
+    this.state = {
+      role: saved.role || 'karyawan',
+      nav: saved.nav || 'tab',
+      loggedIn: false,
+      step: 'id',
+      loginId: '',
+      otp: '',
+      loginError: '',
+      tab: 'beranda',
+      desk: 'ringkasan',
+      period: 'harian',
+      kasAmount: '',
+      kasReason: '',
+      kasMsg: '',
+      chatDraft: '',
+      chats: saved.chats || SEED_CHATS,
+      kasbon: saved.kasbon || SEED_KASBON,
+      vouchers: buildVouchers(),
+      now: new Date(),
+      geo: null,
+      srvUrl: '',
+      srvKey: '',
+      srvOn: false,
+      srvMsg: '',
+      srvOk: null,
+      srvBusy: false,
+      srvSynced: null,
+      srvQueue: 0,
+      srvCopied: '',
+      srvLive: null,
+      deskWho: 'admin',
+      vfEmp: 'ar01',
+      vfCat: 'Silver',
+      vfClient: '',
+      vfAmount: '',
+      vfMsg: '',
+      vfEditId: '',
+      vfQuery: ''
+    };
+  }
+
+  componentDidMount(){
+    this.timer = setInterval(() => this.setState({ now: new Date() }), 20000);
+    this.applyBodyBg();
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(
+      p => this.setState({ geo: { lat: p.coords.latitude, lng: p.coords.longitude } }), () => {}, { timeout: 6000 }
+    );
+    const boot = () => {
+      const S = window.ARServer; if (!S) return;
+      const cfg = S.loadCfg();
+      this.setState({ srvUrl: cfg.url || '', srvKey: cfg.key || '', srvOn: S.isConfigured(), srvQueue: S.queueSize() });
+      if (S.isConfigured()) this.startSync();
+    };
+    if (window.ARServer) boot(); else window.addEventListener('arserver-ready', boot, { once:true });
+  }
+  componentDidUpdate(){ this.applyBodyBg(); }
+  componentWillUnmount(){ clearInterval(this.timer); clearInterval(this.syncTimer); }
+
+  srv(){ return window.ARServer || null; }
+
+  startSync(){
+    clearInterval(this.syncTimer);
+    this.syncNow();
+    this.syncTimer = setInterval(() => this.syncNow(), 12000);
+  }
+  async syncNow(){
+    const S = this.srv(); if (!S || !S.isConfigured()) return;
+    try {
+      await S.flushQueue();
+      const [att, kas, vou, cht] = await Promise.all([
+        S.pull.attendance(60).catch(() => null),
+        S.pull.kasbon(80).catch(() => null),
+        S.pull.vouchers(400).catch(() => null),
+        S.pull.chats(this.me().id, 80).catch(() => null)
+      ]);
+      const patch = { srvSynced: new Date(), srvQueue: S.queueSize(), srvOk: true, srvLive: { att: att || [], kas: kas || [], vou: vou || [], cht: cht || [] } };
+      if (Array.isArray(kas) && kas.length){
+        patch.kasbon = kas.map(k => ({
+          id: String(k.id), emp: k.emp_id || this.me().id, amount: Number(k.amount),
+          reason: k.reason || '', at: new Date(k.at).getTime(),
+          status: k.status === 'Menunggu' ? 'Menunggu Owner' : k.status,
+          note: k.decided_by ? 'Diputuskan ' + k.decided_by : 'Menunggu tinjauan Owner'
+        }));
+      }
+      if (Array.isArray(vou) && vou.length){
+        patch.vouchers = vou.map(v => ({
+          id: v.code || ('V' + v.id), emp: v.emp_id, empName: v.emp_name || '',
+          level: v.category === 'Silver' ? 'Silver' : 'Platinum',
+          category: v.category, client: v.client || '', amount: Number(v.amount),
+          status: v.status || 'Menunggu', date: new Date(v.at)
+        }));
+      }
+      if (Array.isArray(cht) && cht.length){
+        patch.chats = cht.map(c => ({ me: c.from_side === 'karyawan', text: c.text, t: new Date(c.at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}) }));
+      }
+      this.setState(patch);
+    } catch(e){
+      this.setState({ srvOk: false, srvMsg: String(e.message || e) });
+    }
+  }
+  applyBodyBg(){ document.body.style.background = this.theme().bg; document.body.style.color = this.theme().text; }
+
+  theme(){ return THEMES[this.props.mood] || THEMES.Onyx; }
+  persist(patch){
+    const s = Object.assign({}, this.state, patch);
+    try { localStorage.setItem('arcorp-hr-v1', JSON.stringify({ role: s.role, nav: s.nav, chats: s.chats, kasbon: s.kasbon })); } catch(e){}
+  }
+  set(patch){ this.setState(patch); this.persist(patch); }
+
+  me(){ return EMP[0]; }
+  parseRp(v){ return Number(String(v).replace(/[^0-9]/g, '')) || 0; }
+
+  periodStart(){
+    const d = new Date(this.state.now); d.setHours(0,0,0,0);
+    if (this.state.period === 'mingguan') d.setDate(d.getDate() - 6);
+    if (this.state.period === 'bulanan') d.setDate(d.getDate() - 29);
+    return d;
+  }
+  inPeriod(v){ return v.date >= this.periodStart(); }
+
+  download(rows, name){
+    const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\r\n');
+    const url = URL.createObjectURL(new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 3000);
+  }
+
+  badge(color, fill, border){
+    return { padding:'5px 10px', borderRadius:'20px', fontSize:'9.5px', letterSpacing:'.12em', textTransform:'uppercase', whiteSpace:'nowrap', color, background:fill, border:'1px solid ' + border };
+  }
+  statusBadge(status){
+    const a = this.accent();
+    if (status === 'Disetujui' || status === 'Dicairkan' || status === 'Dalam radius') return this.badge('#7FD1A8','rgba(127,209,168,.12)','rgba(127,209,168,.3)');
+    if (status === 'Ditolak' || status === 'Luar radius') return this.badge('#E4756B','rgba(228,117,107,.12)','rgba(228,117,107,.32)');
+    return this.badge(a.base, a.fill, a.line);
+  }
+  accent(){
+    const base = this.props.accent || '#C9A24A';
+    const meta = ACCENTS[base] || ACCENTS['#C9A24A'];
+    const hex = base.replace('#','');
+    const rgb = [0,2,4].map(i => parseInt(hex.slice(i,i+2), 16)).join(',');
+    return { base, bright: meta.bright, on: meta.on, fill:'rgba('+rgb+',.09)', fill2:'rgba('+rgb+',.16)', line:'rgba('+rgb+',.3)', rgb };
+  }
+
+  renderVals(){
+    const st = this.state, t = this.theme(), a = this.accent();
+    const dense = this.props.density === 'Padat';
+    const rootStyle = {
+      '--ar-bg': t.bg, '--ar-bezel': t.bezel, '--ar-surface': t.surface, '--ar-surface2': t.surface2,
+      '--ar-line': t.line, '--ar-text': t.text, '--ar-dim': t.dim, '--ar-faint': t.faint, '--ar-input': t.input,
+      '--ar-glow': t.glow, '--ar-gold': a.base, '--ar-gold2': a.bright, '--ar-ongold': a.on,
+      '--ar-goldline': a.line, '--ar-goldfill': a.fill,
+      '--ar-grad': 'linear-gradient(100deg,' + a.base + ',' + a.bright + ' 52%,' + a.base + ')',
+      '--ar-pad': dense ? '13px' : '19px', '--ar-gap': dense ? '9px' : '15px', '--ar-rad': dense ? '10px' : '17px',
+      background: t.bg, color: t.text, minHeight: '100vh'
+    };
+
+    const pill = (on) => ({ padding:'11px', border:'none', borderRadius:'9px', fontSize:'11px', fontWeight:600, letterSpacing:'.14em', textTransform:'uppercase', cursor:'pointer',
+      background: on ? a.fill2 : 'transparent', color: on ? a.bright : t.dim, boxShadow: on ? 'inset 0 0 0 1px ' + a.line : 'none' });
+    const chip = (on) => ({ padding:'9px 14px', borderRadius:'9px', fontSize:'11px', cursor:'pointer',
+      background: on ? a.fill2 : 'transparent', border:'1px solid ' + (on ? a.line : t.line), color: on ? a.bright : t.dim });
+
+    const clock = st.now.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' });
+    const hour = st.now.getHours();
+    const greeting = hour < 11 ? 'Selamat pagi' : hour < 15 ? 'Selamat siang' : hour < 18 ? 'Selamat sore' : 'Selamat malam';
+
+    const me = this.me();
+    const myPos = st.geo || { lat: me.lat, lng: me.lng };
+    const myKm = km(HQ, myPos);
+    const inRadius = myKm <= RADIUS;
+
+    const mine = st.vouchers.filter(v => v.emp === me.id);
+    const unpaid = mine.filter(v => v.status !== 'Dicairkan');
+    const myPeriod = mine.filter(v => this.inPeriod(v));
+    const periodLabel = st.period === 'harian' ? 'Harian' : st.period === 'mingguan' ? 'Mingguan' : 'Bulanan';
+    const pStart = this.periodStart();
+
+    const canRevise = st.deskWho === 'owner' || st.deskWho === 'consultant';
+    const q = st.vfQuery.trim().toLowerCase();
+    const adminVouchers = st.vouchers
+      .filter(v => !q || (v.client + ' ' + (v.empName || '') + ' ' + v.id).toLowerCase().indexOf(q) >= 0)
+      .slice(0, 60)
+      .map(v => ({
+        id: v.id, client: v.client, empName: v.empName || '', category: v.category,
+        amountLabel: fmt(v.amount),
+        meta: DAYNAMES[v.date.getDay()] + ', ' + dLabel(v.date) + ' · ' + v.date.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),
+        catStyle: v.category === 'Silver' ? this.badge(t.dim, t.surface2, t.line) : this.badge(a.bright, a.fill2, a.line),
+        statusStyle: this.statusBadge(v.status), status: v.status,
+        paid: v.status === 'Dicairkan',
+        edit: () => this.setState({
+          vfEditId: v.id, vfEmp: v.emp, vfCat: v.category, vfClient: v.client,
+          vfAmount: fmt(v.amount), vfMsg: 'Mode revisi — ubah lalu simpan.'
+        }),
+        pay: () => this.reviseVoucher(v.id, { status: v.status === 'Dicairkan' ? 'Menunggu' : 'Dicairkan' }),
+        payLabel: v.status === 'Dicairkan' ? 'Batal cair' : 'Tandai cair',
+        remove: () => this.removeVoucher(v.id),
+        actionsStyle: { display:'flex', gap:'7px', flexWrap:'wrap', opacity: canRevise ? 1 : .35, pointerEvents: canRevise ? 'auto' : 'none' }
+      }));
+
+    const catStyle = (c) => c === 'Silver'
+      ? this.badge(t.dim, t.surface2, t.line)
+      : this.badge(a.bright, a.fill2, a.line);
+
+    const vRow = (v) => ({
+      client: v.client, code: v.id,
+      dateLabel: DAYNAMES[v.date.getDay()] + ', ' + dLabel(v.date),
+      time: v.date.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit' }),
+      amountLabel: v.amount === 400000 ? 'Rp 400.000' : 'Rp 150.000',
+      category: v.category, status: v.status,
+      catStyle: catStyle(v.category), statusStyle: this.statusBadge(v.status)
+    });
+
+    const myKasbon = st.kasbon.filter(k => k.emp === me.id).map(k => ({
+      amountLabel: fmt(k.amount), reason: k.reason, status: k.status, note: k.note,
+      dateLabel: dLabel(new Date(k.at)), statusStyle: this.statusBadge(k.status)
+    }));
+
+    const pendingCount = st.kasbon.filter(k => k.status === 'Menunggu Owner').length;
+    const todayV = st.vouchers.filter(v => v.date >= new Date(new Date(st.now).setHours(0,0,0,0)));
+    const todayTotal = todayV.reduce((s,v) => s + v.amount, 0);
+    const monthV = st.vouchers.filter(v => v.date >= new Date(new Date(st.now).getTime() - 29*864e5));
+
+    const presence = EMP.map((e,i) => {
+      const d = e.id === me.id ? myKm : km(HQ, e);
+      const ok = d <= RADIUS;
+      return { name: e.name, place: e.place, km: d + ' km', time: e.t, coord: e.lat.toFixed(3) + ', ' + e.lng.toFixed(3),
+        status: ok ? 'Dalam radius' : 'Luar radius', badgeStyle: this.statusBadge(ok ? 'Dalam radius' : 'Luar radius'), ok, e };
+    });
+    const onlineCount = presence.filter(p => p.ok).length;
+
+    const lat0 = -5.4, lat1 = -8.6, lng0 = 105.0, lng1 = 114.5;
+    const pinX = (lng) => 6 + ((lng - lng0) / (lng1 - lng0)) * 88;
+    const pinY = (lat) => 8 + ((lat - lat0) / (lat1 - lat0)) * 80;
+    const clusters = [];
+    presence.forEach(p => {
+      const c = clusters.find(c => Math.abs(c.lat - p.e.lat) < 0.75 && Math.abs(c.lng - p.e.lng) < 0.75);
+      if (c){ c.items.push(p); c.lat = (c.lat * (c.items.length - 1) + p.e.lat) / c.items.length; c.lng = (c.lng * (c.items.length - 1) + p.e.lng) / c.items.length; }
+      else clusters.push({ lat: p.e.lat, lng: p.e.lng, items: [p] });
+    });
+    const mapPins = [{ lat: HQ.lat, lng: HQ.lng, label: HQ_NAME, hq: true, ok: true, n: 1 }]
+      .concat(clusters.map(c => {
+        const n = c.items.length;
+        return { lat: c.lat, lng: c.lng, n,
+          label: n > 1 ? c.items[0].e.place + ' · ' + n + ' orang' : c.items[0].e.name.split(' ')[0] + ' · ' + c.items[0].km,
+          hq: false, ok: c.items.every(i => i.ok) };
+      }))
+      .map(p => {
+        const size = p.hq ? 16 : p.n > 1 ? 15 : 11;
+        return {
+          label: p.label,
+          wrapStyle: { position:'absolute', left: pinX(p.lng).toFixed(2) + '%', top: pinY(p.lat).toFixed(2) + '%', transform:'translate(-50%,-50%)',
+            display:'flex', flexDirection: p.hq ? 'column-reverse' : 'column', alignItems:'center', gap:'7px' },
+          dotStyle: { width: size + 'px', height: size + 'px', borderRadius:'50%', flex:'none',
+            display:'grid', placeItems:'center', fontSize:'8px', fontWeight:700,
+            color: p.ok ? '#0B1A13' : '#2A0D0A',
+            background: p.hq ? a.bright : p.ok ? '#7FD1A8' : '#E4756B',
+            boxShadow: '0 0 0 4px rgba(' + (p.hq ? a.rgb : p.ok ? '127,209,168' : '228,117,107') + ',.2)' },
+          labelStyle: { fontSize:'9.5px', letterSpacing:'.06em', whiteSpace:'nowrap', padding:'3px 7px', borderRadius:'6px', background: t.surface, border:'1px solid ' + t.line, color: p.hq ? a.bright : t.dim }
+        };
+      });
+
+    const days = [];
+    for (let i = 13; i >= 0; i--){
+      const d = new Date(st.now); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
+      const key = dayKey(d);
+      const sum = st.vouchers.filter(v => dayKey(v.date) === key).reduce((s,v) => s + v.amount, 0);
+      days.push({ d, sum });
+    }
+    const maxSum = Math.max.apply(null, days.map(x => x.sum).concat([1]));
+    const bars = days.map((x,i) => ({
+      title: dLabel(x.d) + ' · ' + fmt(x.sum),
+      style: { flex:'1', minWidth:'0', height: Math.max(3, (x.sum / maxSum) * 100) + '%', borderRadius:'4px 4px 2px 2px',
+        background: i === days.length - 1 ? 'linear-gradient(180deg,' + a.bright + ',' + a.base + ')' : a.fill2,
+        border: '1px solid ' + a.line }
+    }));
+
+    const empRows = EMP.map(e => {
+      const vs = monthV.filter(v => v.emp === e.id);
+      const ks = st.kasbon.filter(k => k.emp === e.id && k.status === 'Disetujui').reduce((s,k) => s + k.amount, 0);
+      return { name: e.name, code: e.code, role: e.role, level: e.level, email: e.email, phone: e.phone,
+        count: vs.length + ' vc', kasbon: ks ? shortRp(ks) : '—',
+        kasStyle: { color: ks ? '#E4756B' : t.faint },
+        total: shortRp(vs.reduce((s,v) => s + v.amount, 0)),
+        levelStyle: e.level === 'Platinum' ? { color: a.bright } : { color: t.dim } };
+    });
+
+    const reportRows = EMP.map(e => {
+      const vs = st.vouchers.filter(v => v.emp === e.id && this.inPeriod(v));
+      const silver = vs.filter(v => v.amount === 150000).length;
+      const plat = vs.filter(v => v.amount === 400000).length;
+      const gross = vs.reduce((s,v) => s + v.amount, 0);
+      const ks = st.kasbon.filter(k => k.emp === e.id && k.status === 'Disetujui' && new Date(k.at) >= pStart).reduce((s,k) => s + k.amount, 0);
+      return { name: e.name, level: e.level, silver, plat, kasbon: ks ? '-' + shortRp(ks) : '—',
+        net: shortRp(gross - ks), gross, ks, silverN: silver, platN: plat,
+        levelStyle: e.level === 'Platinum' ? { color: a.bright } : { color: t.dim } };
+    });
+    const totalGross = reportRows.reduce((s,r) => s + r.gross, 0);
+    const totalKas = reportRows.reduce((s,r) => s + r.ks, 0);
+
+    const allKasbon = st.kasbon.slice().sort((x,y) => y.at - x.at).map(k => {
+      const e = EMP.find(z => z.id === k.emp) || EMP[0];
+      return { name: e.name, code: e.code, reason: k.reason, amountLabel: fmt(k.amount), status: k.status,
+        dateLabel: dLabel(new Date(k.at)) + ' · ' + new Date(k.at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),
+        pending: k.status === 'Menunggu Owner', decided: k.status !== 'Menunggu Owner',
+        statusStyle: this.statusBadge(k.status),
+        approve: () => this.decide(k.id, true), reject: () => this.decide(k.id, false) };
+    });
+
+    const navMeta = {
+      tab: { title:'A · Tab Bawah', desc:'Lima menu tetap di bawah, selalu terlihat. Pola paling dikenal karyawan lapangan.', best:'Paling cepat dipelajari · rekomendasi awal' },
+      hub: { title:'B · Hub Grid', desc:'Beranda jadi halaman utama berisi kartu menu besar. Tanpa bar tetap, layar terasa lega.', best:'Cocok untuk usia beragam & layar kecil' },
+      rail: { title:'C · Rail Samping', desc:'Menu vertikal di kiri, mirip aplikasi kasir. Konten tetap terlihat saat berpindah.', best:'Cocok jika nanti dipakai di tablet kantor' }
+    };
+    const navOptions = ['tab','hub','rail'].map(k => {
+      const on = st.nav === k;
+      return { title: navMeta[k].title, desc: navMeta[k].desc, best: navMeta[k].best,
+        pick: () => this.set({ nav: k, tab: 'beranda' }),
+        btnLabel: on ? 'Aktif' : 'Lihat',
+        cardStyle: { padding:'16px', borderRadius:'14px', background: on ? a.fill : t.surface2, border:'1px solid ' + (on ? a.line : t.line) },
+        btnStyle: { padding:'7px 13px', borderRadius:'8px', fontSize:'10px', letterSpacing:'.12em', textTransform:'uppercase', cursor:'pointer',
+          background: on ? a.fill2 : 'transparent', border:'1px solid ' + (on ? a.line : t.line), color: on ? a.bright : t.dim } };
+    });
+
+    const menu = TABS.map(m => {
+      const on = st.tab === m.k;
+      return { mono: m.mono, short: m.short, label: m.label, hint: m.hint, go: () => this.setState({ tab: m.k }),
+        tabStyle: { display:'flex', flexDirection:'column', alignItems:'center', gap:'5px', padding:'9px 2px', borderRadius:'11px', cursor:'pointer', border:'none',
+          background: on ? a.fill2 : 'transparent', color: on ? a.bright : t.dim },
+        railStyle: { display:'flex', flexDirection:'column', alignItems:'center', gap:'4px', width:'54px', padding:'11px 2px', borderRadius:'12px', cursor:'pointer', border:'none',
+          background: on ? a.fill2 : 'transparent', color: on ? a.bright : t.dim } };
+    });
+
+    const chatTemplates = ['Sudah di lokasi klien','Butuh approval diskon','Kendala di lapangan'].map(x => ({ text: x, use: () => this.setState({ chatDraft: x }) }));
+
+    const gpsSteps = [
+      { label:'Perangkat', value:'Android · AR Corp App 1.0' },
+      { label:'Koordinat', value: myPos.lat.toFixed(4) + ', ' + myPos.lng.toFixed(4) },
+      { label:'Jarak dari kantor pusat', value: myKm + ' km · batas ' + RADIUS + ' km' },
+      { label:'Status absensi', value: inRadius ? 'Diterima — dalam radius' : 'Ditandai — di luar radius' },
+      { label:'Notifikasi ke pusat', value:'Terkirim ' + clock }
+    ];
+
+    return {
+      rootStyle,
+      showLogin: !st.loggedIn,
+      isKaryawan: st.loggedIn && st.role === 'karyawan',
+      isPusat: st.loggedIn && st.role === 'pusat',
+      stepId: st.step === 'id', stepOtp: st.step === 'otp', stepGps: st.step === 'gps',
+      loginId: st.loginId, otp: st.otp, loginError: st.loginError,
+      onLoginId: e => this.setState({ loginId: e.target.value, loginError: '' }),
+      onOtp: e => this.setState({ otp: e.target.value.replace(/[^0-9]/g,'').slice(0,6) }),
+      pickKaryawan: () => this.set({ role:'karyawan', loginId:'', step:'id', loginError:'' }),
+      pickPusat: () => this.set({ role:'pusat', loginId:'', step:'id', loginError:'' }),
+      roleKaryawanStyle: pill(st.role === 'karyawan'),
+      rolePusatStyle: pill(st.role === 'pusat'),
+      sendOtp: () => {
+        const v = st.loginId.trim().toLowerCase();
+        if (!v) return this.setState({ loginError: 'Masukkan email terdaftar atau nomor HP.' });
+        const known = st.role === 'pusat'
+          ? ['owner@arcorp.id','admin@arcorp.id','consultant@arcorp.id']
+          : EMP.map(e => e.email).concat(EMP.map(e => e.phone.replace(/\s/g,'')));
+        const ok = known.indexOf(v.replace(/\s/g,'')) >= 0;
+        if (!ok) return this.setState({ loginError: 'Akun tidak terdaftar. Gunakan ' + (st.role === 'pusat' ? 'owner@arcorp.id' : 'ekhy@arcorp.id') + '.' });
+        this.setState({ step:'otp', otp:'', loginError:'' });
+      },
+      verifyOtp: () => {
+        if (st.otp.length < 6) return this.setState({ loginError:'' , otp: st.otp });
+        if (st.role === 'pusat'){
+          const v = st.loginId.trim().toLowerCase();
+          const who = v.indexOf('owner') === 0 ? 'owner' : v.indexOf('consultant') === 0 ? 'consultant' : 'admin';
+          this.setState({ loggedIn: true, desk:'ringkasan', deskWho: who });
+        }
+        else this.setState({ step:'gps' });
+      },
+      backToId: () => this.setState({ step:'id', otp:'' }),
+      finishLogin: () => { this.setState({ loggedIn: true, tab:'beranda' }); this.recordAttendance(); },
+      gpsSteps,
+      logout: () => this.setState({ loggedIn:false, step:'id', otp:'', loginId:'' }),
+
+      clock, greeting,
+      meName: me.name, meLevel: me.level, meCode: me.code, meRole: me.role, meMono:'ER',
+      checkInTime: me.t,
+      myPlace: (st.geo ? 'Lokasi perangkat ini' : me.place) + ' · ' + (inRadius ? 'terverifikasi' : 'di luar radius'),
+      myDistance: myKm + ' km',
+      myCoord: myPos.lat.toFixed(4) + ', ' + myPos.lng.toFixed(4),
+      radiusLabel: inRadius ? 'Dalam radius' : 'Luar radius',
+      radiusBadgeStyle: this.statusBadge(inRadius ? 'Dalam radius' : 'Luar radius'),
+
+      mySaldo: fmt(unpaid.reduce((s,v) => s + v.amount, 0)),
+      mySaldoCount: unpaid.length,
+      mySilverCount: unpaid.filter(v => v.amount === 150000).length,
+      myPlatCount: unpaid.filter(v => v.amount === 400000).length,
+      nextPayout: 'Jumat, ' + dLabel(new Date(st.now.getTime() + ((5 - st.now.getDay() + 7) % 7 || 7) * 864e5)),
+      myFeed: mine.slice(0,5).map(v => ({ title: v.client, meta: v.category + ' · ' + dLabel(v.date) + ' ' + v.date.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), amount: v.amount === 400000 ? '+400rb' : '+150rb' })),
+
+      isTab: st.nav === 'tab', isHub: st.nav === 'hub', isRail: st.nav === 'rail',
+      showBack: st.nav === 'hub' && st.tab !== 'beranda',
+      goHome: () => this.setState({ tab:'beranda' }),
+      menu, hubMenu: menu.slice(1), navOptions,
+      navTab: () => this.set({ nav:'tab' }), navHub: () => this.set({ nav:'hub', tab:'beranda' }), navRail: () => this.set({ nav:'rail' }),
+      navTabStyle: chip(st.nav === 'tab'), navHubStyle: chip(st.nav === 'hub'), navRailStyle: chip(st.nav === 'rail'),
+
+      tabBeranda: st.tab === 'beranda', tabVoucher: st.tab === 'voucher', tabKasbon: st.tab === 'kasbon',
+      tabLapor: st.tab === 'lapor', tabProfil: st.tab === 'profil',
+
+      period: st.period, periodLabel,
+      periodRange: dLabel(pStart) + ' – ' + dLabel(st.now),
+      perHarian: () => this.setState({ period:'harian' }), perMingguan: () => this.setState({ period:'mingguan' }), perBulanan: () => this.setState({ period:'bulanan' }),
+      perHarianStyle: pill(st.period === 'harian'), perMingguanStyle: pill(st.period === 'mingguan'), perBulananStyle: pill(st.period === 'bulanan'),
+      myVouchers: myPeriod.map(vRow),
+      myPeriodTotal: fmt(myPeriod.reduce((s,v) => s + v.amount, 0)),
+      myPeriodCount: myPeriod.length,
+      downloadMine: () => this.download(
+        [['Tanggal','Jam','Kode','Karyawan','Level','Kategori','Nilai','Klien','Status']].concat(
+          myPeriod.map(v => [dayKey(v.date), v.date.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), v.id, v.empName, v.level, v.category, v.amount, v.client, v.status])),
+        'AR-Corp-' + me.code + '-' + periodLabel.toLowerCase() + '.csv'),
+
+      kasAmount: st.kasAmount, kasReason: st.kasReason, kasMsg: st.kasMsg,
+      onKasAmount: e => this.setState({ kasAmount: this.parseRp(e.target.value) ? fmt(this.parseRp(e.target.value)) : '', kasMsg:'' }),
+      onKasReason: e => this.setState({ kasReason: e.target.value, kasMsg:'' }),
+      amt500: () => this.setState({ kasAmount: fmt(500000) }), amt1jt: () => this.setState({ kasAmount: fmt(1000000) }), amt2jt: () => this.setState({ kasAmount: fmt(2000000) }),
+      submitKasbon: () => {
+        const amt = this.parseRp(st.kasAmount);
+        if (amt < 100000) return this.setState({ kasMsg:'Nominal minimal Rp 100.000.' });
+        if (st.kasReason.trim().length < 6) return this.setState({ kasMsg:'Tuliskan alasan pengajuan.' });
+        const reason = st.kasReason.trim();
+        const next = [{ id:'K'+Date.now(), emp: me.id, amount: amt, reason, at: Date.now(), status:'Menunggu Owner', note:'Menunggu tinjauan Owner' }].concat(st.kasbon);
+        this.setState({ kasbon: next, kasAmount:'', kasReason:'', kasMsg:'Pengajuan terkirim. Owner menerima notifikasi.' });
+        const S = this.srv();
+        if (S && S.isConfigured()) S.send('kasbon', { emp_id: me.id, emp_name: me.name, amount: amt, reason, status:'Menunggu' })
+          .then(() => { this.setState({ srvQueue: S.queueSize() }); this.syncNow(); });
+        this.persist({ kasbon: next });
+      },
+      myKasbon,
+
+      chats: st.chats.map(c => ({
+        text: c.text, time: c.t,
+        rowStyle: { display:'flex', justifyContent: c.me ? 'flex-end' : 'flex-start' },
+        bubbleStyle: { maxWidth:'80%', padding:'11px 13px', fontSize:'12.5px', lineHeight:1.55, borderRadius: c.me ? '14px 14px 4px 14px' : '14px 14px 14px 4px',
+          background: c.me ? a.fill2 : t.surface, border:'1px solid ' + (c.me ? a.line : t.line), color: c.me ? a.bright : t.text }
+      })),
+      chatDraft: st.chatDraft, chatTemplates,
+      onChatDraft: e => this.setState({ chatDraft: e.target.value }),
+      onChatKey: e => { if (e.key === 'Enter') this.sendChatNow(); },
+      sendChat: () => this.sendChatNow(),
+
+      profileRows: [
+        { k:'Kode karyawan', v: me.code },
+        { k:'Email login', v: me.email },
+        { k:'Nomor HP', v: me.phone },
+        { k:'Level komisi', v: me.level + ' · Rp 400.000 / voucher' },
+        { k:'Supervisor', v:'Bayu Pratama' },
+        { k:'Bergabung', v:'12 Feb 2025' }
+      ],
+      myLogins: [0,1,2,3].map(i => {
+        const d = new Date(st.now); d.setDate(d.getDate() - i);
+        const ok = i !== 2;
+        return { place: i === 2 ? 'Surabaya, Jawa Timur' : me.place, when: dLabel(d) + ' · ' + (i === 0 ? me.t : ['08:12','08:40','09:38','07:58'][i]),
+          km: (i === 2 ? 663 : myKm) + ' km', status: ok ? 'Dalam radius' : 'Luar radius', badgeStyle: this.statusBadge(ok ? 'Dalam radius' : 'Luar radius') };
+      }),
+
+      deskMenu: DESKS.map(d => {
+        const on = st.desk === d.k;
+        const count = d.k === 'kasbon' ? (pendingCount || '') : d.k === 'karyawan' ? EMP.length : d.k === 'lokasi' ? onlineCount : '';
+        return { label: d.label, go: () => this.setState({ desk: d.k }),
+          style: { display:'flex', justifyContent:'space-between', alignItems:'center', gap:'10px', width:'100%', padding:'12px 14px', borderRadius:'10px', cursor:'pointer', border:'none',
+            fontSize:'12.5px', textAlign:'left', background: on ? a.fill2 : 'transparent', color: on ? a.bright : t.dim,
+            boxShadow: on ? 'inset 0 0 0 1px ' + a.line : 'none' },
+          count: count === '' ? '' : String(count),
+          countStyle: { fontSize:'10px', padding: count === '' ? '0' : '3px 7px', borderRadius:'20px',
+            background: d.k === 'kasbon' && pendingCount ? 'rgba(228,117,107,.18)' : t.surface2,
+            color: d.k === 'kasbon' && pendingCount ? '#E4756B' : t.faint } };
+      }),
+      deskTitle: (DESKS.find(d => d.k === st.desk) || DESKS[0]).title,
+      deskSubtitle: (DESKS.find(d => d.k === st.desk) || DESKS[0]).sub,
+      deskRingkasan: st.desk === 'ringkasan', deskLokasi: st.desk === 'lokasi', deskKaryawan: st.desk === 'karyawan',
+      deskKasbon: st.desk === 'kasbon', deskLaporan: st.desk === 'laporan',
+      deskServer: st.desk === 'server',
+      deskVoucher: st.desk === 'voucher',
+
+      whoLabel: st.deskWho === 'owner' ? 'Owner' : st.deskWho === 'consultant' ? 'Consultant' : 'Admin Pusat',
+      whoStyle: this.badge(a.bright, a.fill2, a.line),
+      canRevise, cannotRevise: !canRevise,
+      vfEmp: st.vfEmp, vfCat: st.vfCat, vfClient: st.vfClient,
+      vfAmount: st.vfAmount || fmt(catAmount(st.vfCat)),
+      vfMsg: st.vfMsg,
+      vfMsgStyle: { minHeight:'18px', fontSize:'11.5px', lineHeight:1.6, marginTop:'9px',
+        color: /^Gagal|minimal|Pilih|Tulis|tidak/i.test(st.vfMsg) ? '#E4756B' : '#7FD1A8' },
+      vfEditing: !!st.vfEditId,
+      vfFormTitle: st.vfEditId ? 'Revisi voucher ' + st.vfEditId : 'Voucher baru',
+      vfSubmitLabel: st.vfEditId ? 'Simpan Revisi' : 'Simpan Voucher',
+      vfAmountLocked: !!st.vfEditId && !canRevise,
+      onVfEmp: e => this.setState({ vfEmp: e.target.value, vfMsg:'' }),
+      onVfCat: e => this.setState({ vfCat: e.target.value, vfAmount: fmt(catAmount(e.target.value)), vfMsg:'' }),
+      onVfClient: e => this.setState({ vfClient: e.target.value, vfMsg:'' }),
+      onVfAmount: e => this.setState({ vfAmount: this.parseRp(e.target.value) ? fmt(this.parseRp(e.target.value)) : '', vfMsg:'' }),
+      vfEmpOptions: EMP.map(e => ({ value: e.id, label: e.code + ' · ' + e.name })),
+      vfCatOptions: ['Silver','Platinum','Jasmine'].map(c => ({ value: c, label: c + ' — ' + fmt(catAmount(c)) })),
+      vfCancel: () => this.setState({ vfEditId:'', vfClient:'', vfAmount:'', vfCat:'Silver', vfMsg:'' }),
+      vfSubmit: () => this.saveVoucher(),
+      onVfQuery: e => this.setState({ vfQuery: e.target.value }),
+      vfQuery: st.vfQuery,
+      vfCatHint: 'Silver ' + fmt(150000) + ' · Platinum dan Jasmine ' + fmt(400000) + '. Nominal terisi otomatis dari kategori.',
+      vfRoleHint: canRevise
+        ? 'Anda dapat merevisi nominal, menghapus, dan menandai voucher sebagai dicairkan.'
+        : 'Admin pusat dapat menambah voucher. Revisi dan penghapusan hanya oleh Owner dan Consultant.',
+      vfTodayCount: st.vouchers.filter(v => dayKey(v.date) === dayKey(st.now)).length,
+      vfTodayTotal: fmt(st.vouchers.filter(v => dayKey(v.date) === dayKey(st.now)).reduce((s,v) => s + v.amount, 0)),
+      vfRows: adminVouchers,
+
+      srvOn: st.srvOn,
+      srvOff: !st.srvOn,
+      srvUrl: st.srvUrl, srvKey: st.srvKey,
+      onSrvUrl: e => this.setState({ srvUrl: e.target.value, srvMsg:'' }),
+      onSrvKey: e => this.setState({ srvKey: e.target.value, srvMsg:'' }),
+      srvBusy: st.srvBusy,
+      srvMsg: st.srvMsg,
+      srvMsgStyle: { minHeight:'18px', fontSize:'12px', lineHeight:1.6, marginTop:'10px',
+        color: st.srvOk === false ? '#E4756B' : st.srvOk === true ? '#7FD1A8' : t.dim },
+      srvConnectLabel: st.srvBusy ? 'Menguji…' : st.srvOn ? 'Uji Ulang Koneksi' : 'Sambungkan',
+      srvConnect: async () => {
+        const S = this.srv(); if (!S) return;
+        const url = st.srvUrl.trim(), key = st.srvKey.trim();
+        if (!/^https:\/\/.+\.supabase\.co$/.test(url.replace(/\/+$/, '')))
+          return this.setState({ srvOk:false, srvMsg:'URL harus berbentuk https://xxxxxxxx.supabase.co' });
+        if (key.length < 40) return this.setState({ srvOk:false, srvMsg:'Anon key terlalu pendek — pastikan tersalin penuh.' });
+        this.setState({ srvBusy:true, srvMsg:'Menghubungi server…', srvOk:null });
+        const r = await S.testConnection({ url, key });
+        if (r.ok){
+          S.saveCfg({ url, key });
+          this.setState({ srvBusy:false, srvOn:true, srvOk:true, srvMsg:'Tersambung. Data kini tersimpan di server.' });
+          this.startSync();
+        } else {
+          this.setState({ srvBusy:false, srvOk:false, srvMsg: r.message });
+        }
+      },
+      srvDisconnect: () => {
+        const S = this.srv(); if (S) S.clearCfg();
+        clearInterval(this.syncTimer);
+        this.setState({ srvOn:false, srvOk:null, srvMsg:'Koneksi dilepas. Aplikasi kembali ke mode lokal.', srvLive:null, srvSynced:null });
+      },
+      srvSeed: () => this.seedServer(),
+      srvSyncNow: () => { this.setState({ srvMsg:'Menyegarkan…', srvOk:null }); this.syncNow(); },
+      srvSyncedLabel: st.srvSynced
+        ? 'Tersinkron ' + st.srvSynced.toLocaleTimeString('id-ID', { hour:'2-digit', minute:'2-digit', second:'2-digit' })
+        : 'Belum tersinkron',
+      srvQueueLabel: st.srvQueue ? st.srvQueue + ' aksi menunggu terkirim' : 'Tidak ada antrean',
+      srvTables: [
+        { name:'ar_employees',  label:'Karyawan',  count: EMP.length },
+        { name:'ar_attendance', label:'Absensi',   count: (st.srvLive && st.srvLive.att.length) || 0 },
+        { name:'ar_vouchers',   label:'Voucher',   count: (st.srvLive && st.srvLive.vou.length) || 0 },
+        { name:'ar_kasbon',     label:'Kasbon',    count: (st.srvLive && st.srvLive.kas.length) || 0 },
+        { name:'ar_chats',      label:'Laporan',   count: (st.srvLive && st.srvLive.cht.length) || 0 }
+      ].map(r => ({ name: r.name, label: r.label, count: String(r.count),
+        countStyle: { fontSize:'13px', color: r.count ? a.bright : t.faint, fontVariantNumeric:'tabular-nums' } })),
+      srvCopied: st.srvCopied,
+      srvCopiedStyle: { minHeight:'17px', fontSize:'11.5px', lineHeight:1.65, marginTop:'11px',
+        color: /diblokir|memblokir/i.test(st.srvCopied) ? '#E4756B' : '#7FD1A8' },
+      copySql: () => {
+        const S = this.srv(); if (!S) return;
+        const txt = S.SCHEMA_SQL;
+        const done = () => { this.setState({ srvCopied:'SQL tersalin — tempel di Supabase SQL Editor lalu klik Run.' });
+          setTimeout(() => this.setState({ srvCopied:'' }), 5000); };
+        const legacy = () => {
+          const ta = document.createElement('textarea');
+          ta.value = txt; ta.style.position='fixed'; ta.style.top='0'; ta.style.opacity='0';
+          document.body.appendChild(ta); ta.focus(); ta.select();
+          let ok = false;
+          try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+          ta.remove();
+          if (ok) done();
+          else this.setState({ srvCopied:'Peramban memblokir penyalinan otomatis. Gunakan tombol Unduh .sql di samping, lalu buka berkasnya dan salin isinya.' });
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(txt).then(done).catch(legacy);
+        } else legacy();
+      },
+      downloadSql: () => {
+        const S = this.srv(); if (!S) return;
+        const url = URL.createObjectURL(new Blob([S.SCHEMA_SQL], { type:'text/plain;charset=utf-8' }));
+        const el = document.createElement('a');
+        el.href = url; el.download = 'ar-corp-skema.sql';
+        document.body.appendChild(el); el.click(); el.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      },
+      srvSteps: [
+        { n:'1', t:'Buat akun gratis di supabase.com, lalu New project. Pilih region Singapore.' },
+        { n:'2', t:'Buka SQL Editor di Supabase, klik Salin SQL di samping, tempel, klik Run.' },
+        { n:'3', t:'Buka Settings → API. Salin Project URL dan anon public key ke dua kolom di bawah.' },
+        { n:'4', t:'Klik Sambungkan, lalu Kirim Data Karyawan agar daftar karyawan masuk ke server.' }
+      ],
+
+      srvPill: st.srvOn ? 'Server aktif' : 'Mode lokal',
+      srvPillStyle: st.srvOn
+        ? this.badge('#7FD1A8','rgba(127,209,168,.12)','rgba(127,209,168,.3)')
+        : this.badge(t.faint, t.surface2, t.line),
+      goServer: () => this.setState({ desk:'server' }),
+      onlineCount,
+
+      kpis: [
+        { label:'Voucher hari ini', value: String(todayV.length), sub: shortRp(todayTotal) + ' komisi' },
+        { label:'Karyawan absen hari ini', value: onlineCount + ' / ' + EMP.length, sub:'Terverifikasi GPS dalam radius' },
+        { label:'Kasbon menunggu owner', value: String(pendingCount), sub: pendingCount ? 'Perlu keputusan Anda' : 'Tidak ada tunggakan' },
+        { label:'Komisi 30 hari', value: shortRp(monthV.reduce((s,v) => s + v.amount, 0)), sub: monthV.length + ' voucher terbit' }
+      ],
+      loginFeed: presence.map((p,i) => ({
+        mono: p.name.split(' ').map(w => w[0]).slice(0,2).join(''), name: p.name,
+        detail: 'Login ' + p.time + ' · ' + p.place + ' · ' + p.km,
+        status: p.status, badgeStyle: p.badgeStyle })),
+      bars, barsFrom: dLabel(days[0].d), barsTo: dLabel(days[days.length-1].d),
+      silverAll: monthV.filter(v => v.amount === 150000).length,
+      platAll: monthV.filter(v => v.amount === 400000).length,
+      mapPins, presence,
+      empRows, allKasbon, reportRows,
+      totalSilver: reportRows.reduce((s,r) => s + r.silverN, 0),
+      totalPlat: reportRows.reduce((s,r) => s + r.platN, 0),
+      totalKasbon: totalKas ? '-' + shortRp(totalKas) : '—',
+      totalNet: shortRp(totalGross - totalKas),
+      downloadAll: () => {
+        const vs = st.vouchers.filter(v => this.inPeriod(v));
+        this.download([['Tanggal','Jam','Kode Voucher','Kode Karyawan','Karyawan','Level','Kategori','Nilai','Klien','Status']].concat(
+          vs.map(v => [dayKey(v.date), v.date.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), v.id, v.code, v.empName, v.level, v.category, v.amount, v.client, v.status])),
+          'AR-Corp-rekap-' + periodLabel.toLowerCase() + '.csv');
+      }
+    };
+  }
+
+  sendChatNow(){
+    const v = this.state.chatDraft.trim();
+    if (!v) return;
+    const next = this.state.chats.concat([{ me:true, text:v, t:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}) }]);
+    this.setState({ chats: next, chatDraft:'' });
+    this.persist({ chats: next });
+    const S = this.srv();
+    if (S && S.isConfigured()) S.send('chat', { emp_id: this.me().id, from_side:'karyawan', text: v })
+      .then(() => this.setState({ srvQueue: S.queueSize() }));
+  }
+
+  decide(id, ok){
+    const who = new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    const next = this.state.kasbon.map(k => k.id === id
+      ? Object.assign({}, k, { status: ok ? 'Disetujui' : 'Ditolak', note: (ok ? 'Disetujui' : 'Ditolak') + ' Owner · ' + who })
+      : k);
+    this.setState({ kasbon: next });
+    this.persist({ kasbon: next });
+    const S = this.srv();
+    if (S && S.isConfigured() && /^\d+$/.test(String(id))){
+      S.push.decideKasbon(id, ok ? 'Disetujui' : 'Ditolak', 'Owner')
+        .then(() => this.syncNow())
+        .catch(e => this.setState({ srvOk:false, srvMsg:'Gagal simpan keputusan: ' + e.message }));
+    }
+  }
+
+  // Absensi otomatis saat login karyawan — dikirim ke server bila tersambung.
+  recordAttendance(){
+    const S = this.srv(); if (!S || !S.isConfigured()) return;
+    const me = this.me();
+    const pos = this.state.geo || { lat: me.lat, lng: me.lng };
+    const d = km(HQ, pos);
+    S.send('attendance', {
+      emp_id: me.id, emp_name: me.name,
+      lat: pos.lat, lng: pos.lng, distance_km: d, in_radius: d <= RADIUS,
+      place: this.state.geo ? 'Lokasi perangkat' : me.place,
+      device: (navigator.userAgent || '').slice(0, 120)
+    }).then(() => this.setState({ srvQueue: S.queueSize() }));
+  }
+
+  saveVoucher(){
+    const st = this.state;
+    const emp = EMP.find(e => e.id === st.vfEmp) || EMP[0];
+    const client = st.vfClient.trim();
+    const amount = this.parseRp(st.vfAmount) || catAmount(st.vfCat);
+    if (client.length < 3) return this.setState({ vfMsg:'Tulis nama klien atau nomor transaksi.' });
+    if (amount < 1000) return this.setState({ vfMsg:'Nominal tidak valid.' });
+
+    if (st.vfEditId){
+      this.reviseVoucher(st.vfEditId, { emp: emp.id, empName: emp.name, level: emp.level, category: st.vfCat, client, amount });
+      return this.setState({ vfEditId:'', vfClient:'', vfAmount:'', vfMsg:'Revisi tersimpan.' });
+    }
+
+    const code = 'V' + Date.now().toString().slice(-8);
+    const row = { id: code, emp: emp.id, empName: emp.name, level: emp.level,
+      category: st.vfCat, client, amount, status:'Menunggu', date: new Date() };
+    const next = [row].concat(st.vouchers);
+    this.setState({ vouchers: next, vfClient:'', vfAmount:'', vfMsg:'Voucher tersimpan untuk ' + emp.name + '.' });
+
+    const S = this.srv();
+    if (S && S.isConfigured()) S.send('voucher', {
+      code, emp_id: emp.id, emp_name: emp.name, category: st.vfCat,
+      client, amount, status:'Menunggu'
+    }).then(() => { this.setState({ srvQueue: S.queueSize() }); this.syncNow(); });
+  }
+
+  reviseVoucher(id, patch){
+    const next = this.state.vouchers.map(v => v.id === id ? Object.assign({}, v, patch) : v);
+    this.setState({ vouchers: next });
+    const S = this.srv();
+    if (!S || !S.isConfigured()) return;
+    const body = {};
+    if (patch.status) body.status = patch.status;
+    if (patch.client) body.client = patch.client;
+    if (patch.amount) body.amount = patch.amount;
+    if (patch.category) body.category = patch.category;
+    if (patch.emp){ body.emp_id = patch.emp; body.emp_name = patch.empName; }
+    this.patchByCode(id, body)
+      .then(() => this.syncNow())
+      .catch(e => this.setState({ srvOk:false, srvMsg:'Gagal simpan revisi: ' + (e.message || e) }));
+  }
+
+  patchByCode(code, body){
+    const S = this.srv();
+    return S.pull.vouchers(400).then(rows => {
+      const hit = (rows || []).find(r => r.code === code);
+      if (!hit) throw new Error('Voucher ' + code + ' belum ada di server.');
+      return S.push.updateVoucher(hit.id, body);
+    });
+  }
+
+  removeVoucher(id){
+    const next = this.state.vouchers.filter(v => v.id !== id);
+    this.setState({ vouchers: next, vfMsg:'Voucher ' + id + ' dihapus.' });
+    const S = this.srv();
+    if (!S || !S.isConfigured()) return;
+    S.pull.vouchers(400).then(rows => {
+      const hit = (rows || []).find(r => r.code === id);
+      if (hit) return S.push.deleteVoucher(hit.id);
+    }).then(() => this.syncNow()).catch(() => {});
+  }
+
+  async seedServer(){
+    const S = this.srv(); if (!S || !S.isConfigured()) return;
+    this.setState({ srvBusy:true, srvMsg:'Mengirim data karyawan…' });
+    try {
+      await S.push.employees(EMP.map(e => ({
+        id: e.id, code: e.code, name: e.name, level: e.level, role: e.role,
+        email: e.email, phone: e.phone, place: e.place, supervisor: e.supervisor || null, active: true
+      })));
+      this.setState({ srvBusy:false, srvOk:true, srvMsg: EMP.length + ' karyawan tersimpan di server.' });
+      this.syncNow();
+    } catch(e){
+      this.setState({ srvBusy:false, srvOk:false, srvMsg:'Gagal: ' + (e.message || e) });
+    }
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Peta Lokasi Absensi</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  html, body { margin:0; padding:0; height:100%; background:#111114; }
+  #map { position:absolute; inset:0; }
+  .leaflet-container { background:#111114; font-family:'Manrope',system-ui,sans-serif; }
+  .leaflet-control-attribution { background:rgba(17,17,20,.75) !important; color:rgba(237,233,226,.4) !important; font-size:9px !important; }
+  .leaflet-control-attribution a { color:rgba(229,196,102,.6) !important; }
+  .leaflet-control-zoom a { background:#111114 !important; color:#EDE9E2 !important; border-color:rgba(255,255,255,.12) !important; }
+  .leaflet-control-zoom a:hover { background:#1a1a1f !important; }
+
+  .ar-pin { display:flex; flex-direction:column; align-items:center; }
+  .ar-pin .dot { border-radius:50%; display:grid; place-items:center; font-family:'Cormorant Garamond',Georgia,serif; font-weight:700; box-shadow:0 0 0 5px rgba(0,0,0,.25); }
+  .ar-pin.hq .dot { width:26px; height:26px; background:#F2DC9B; color:#1A1408; font-size:12px; box-shadow:0 0 0 6px rgba(242,220,155,.22); }
+  .ar-pin.ok .dot { width:20px; height:20px; background:#7FD1A8; color:#0B1A13; font-size:10px; box-shadow:0 0 0 6px rgba(127,209,168,.22); }
+  .ar-pin.bad .dot { width:20px; height:20px; background:#E4756B; color:#2A0D0A; font-size:10px; box-shadow:0 0 0 6px rgba(228,117,107,.22); }
+
+  .ar-popup .leaflet-popup-content-wrapper { background:#16161a; color:#EDE9E2; border:1px solid rgba(229,196,102,.25); border-radius:12px; box-shadow:0 20px 50px -20px rgba(0,0,0,.8); }
+  .ar-popup .leaflet-popup-tip { background:#16161a; border:1px solid rgba(229,196,102,.25); }
+  .ar-popup-title { font-size:13px; font-weight:700; color:#F2DC9B; margin-bottom:4px; }
+  .ar-popup-row { font-size:11px; color:rgba(237,233,226,.65); line-height:1.6; }
+  .ar-popup-badge { display:inline-block; margin-top:6px; padding:3px 9px; border-radius:20px; font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+  .ar-popup-badge.ok { background:rgba(127,209,168,.15); color:#7FD1A8; }
+  .ar-popup-badge.bad { background:rgba(228,117,107,.15); color:#E4756B; }
+
+  .ar-legend { position:absolute; left:12px; bottom:12px; z-index:400; font-size:10px; letter-spacing:.05em; color:rgba(237,233,226,.5); background:rgba(17,17,20,.72); padding:6px 10px; border-radius:8px; border:1px solid rgba(255,255,255,.08); }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="ar-legend">◎ Kantor Pusat Jakarta · lingkaran = batas 500 km</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var HQ = { lat: -6.2088, lng: 106.8456, name: 'Kantor Pusat — Jakarta' };
+  var RADIUS_KM = 500;
+  var EMP = [
+    { name:'Ekhy Ramadhan', code:'AR-01', place:'Jakarta Selatan', lat:-6.2615, lng:106.8106, t:'08:12' },
+    { name:'Dewi Anggraeni', code:'AR-02', place:'Bandung',        lat:-6.9175, lng:107.6191, t:'08:47' },
+    { name:'Bayu Pratama',   code:'AR-03', place:'Bekasi',         lat:-6.2383, lng:106.9756, t:'07:55' },
+    { name:'Sinta Maharani', code:'AR-04', place:'Semarang',       lat:-6.9667, lng:110.4167, t:'09:20' },
+    { name:'Fajar Nugroho',  code:'AR-05', place:'Surabaya',       lat:-7.2575, lng:112.7521, t:'09:38' },
+    { name:'Lia Kusuma',     code:'AR-06', place:'Yogyakarta',     lat:-7.7956, lng:110.3695, t:'10:05' }
+  ];
+
+  function km(a, b){
+    var R = 6371, dLat = (b.lat-a.lat)*Math.PI/180, dLng = (b.lng-a.lng)*Math.PI/180;
+    var s = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(a.lat*Math.PI/180)*Math.cos(b.lat*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
+    return Math.round(2*R*Math.asin(Math.sqrt(s)));
+  }
+
+  var map = L.map('map', { zoomControl:true, attributionControl:true }).setView([HQ.lat, HQ.lng], 6);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains:'abcd', maxZoom:19
+  }).addTo(map);
+
+  function icon(cls, label){
+    return L.divIcon({
+      className:'', html:'<div class="ar-pin ' + cls + '"><div class="dot">' + (label||'') + '</div></div>',
+      iconSize: cls === 'hq' ? [26,26] : [20,20], iconAnchor: cls === 'hq' ? [13,13] : [10,10]
+    });
+  }
+
+  // Radius 500km dari kantor pusat
+  L.circle([HQ.lat, HQ.lng], {
+    radius: RADIUS_KM * 1000, color:'#C9A24A', weight:1, dashArray:'6,6',
+    fillColor:'#C9A24A', fillOpacity:0.05
+  }).addTo(map);
+
+  var bounds = [[HQ.lat, HQ.lng]];
+
+  L.marker([HQ.lat, HQ.lng], { icon: icon('hq', '◎') })
+    .addTo(map)
+    .bindPopup('<div class="ar-popup-title">' + HQ.name + '</div><div class="ar-popup-row">Pusat operasional · titik radius 500 km</div>', { className:'ar-popup' });
+
+  EMP.forEach(function(e){
+    var d = km(HQ, e);
+    var ok = d <= RADIUS_KM;
+    L.marker([e.lat, e.lng], { icon: icon(ok ? 'ok' : 'bad') })
+      .addTo(map)
+      .bindPopup(
+        '<div class="ar-popup-title">' + e.name + '</div>' +
+        '<div class="ar-popup-row">' + e.code + ' · ' + e.place + '</div>' +
+        '<div class="ar-popup-row">Jarak dari pusat: ' + d + ' km</div>' +
+        '<div class="ar-popup-row">Login ' + e.t + ' · ' + e.lat.toFixed(3) + ', ' + e.lng.toFixed(3) + '</div>' +
+        '<span class="ar-popup-badge ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'Dalam radius' : 'Luar radius') + '</span>',
+        { className:'ar-popup' }
+      );
+    bounds.push([e.lat, e.lng]);
+  });
+
+  map.fitBounds(bounds, { padding:[36,36] });
+})();
+</script>
+</body>
+</html>

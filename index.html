@@ -465,19 +465,10 @@ if ('serviceWorker' in navigator && location.protocol === 'https:'){
       <div style="padding:var(--ar-pad,20px);background:var(--ar-surface,#111114);border:1px solid var(--ar-line,rgba(255,255,255,.08));border-radius:var(--ar-rad,16px)">
         <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px">
           <span style="font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.45))">Sebaran lokasi absensi · radius 500 km</span>
-          <span style="font-size:10.5px;color:var(--ar-faint,rgba(237,233,226,.35))">skema, bukan peta jalan</span>
+          <span style="font-size:10.5px;color:var(--ar-faint,rgba(237,233,226,.35))">peta interaktif · geser &amp; zoom</span>
         </div>
         <div style="position:relative;height:392px;border-radius:14px;border:1px solid var(--ar-line,rgba(255,255,255,.07));background:var(--ar-surface2,rgba(255,255,255,.02));overflow:hidden">
-          <span style="position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;border:1px dashed var(--ar-goldline,rgba(229,196,102,.35))"></span>
-          <span style="position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;border-radius:50%;background:var(--ar-goldfill,rgba(229,196,102,.05))"></span>
-          <span style="position:absolute;left:50%;top:50%;width:170px;height:170px;margin:-85px 0 0 -85px;border-radius:50%;border:1px solid var(--ar-line,rgba(255,255,255,.07))"></span>
-          <sc-for list="{{ mapPins }}" as="p" hint-placeholder-count="6">
-            <span style="{{ p.wrapStyle }}">
-              <span style="{{ p.dotStyle }}"></span>
-              <span style="{{ p.labelStyle }}">{{ p.label }}</span>
-            </span>
-          </sc-for>
-          <span style="position:absolute;left:14px;bottom:12px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ar-dim,rgba(237,233,226,.4))">◎ Kantor Pusat Jakarta · lingkaran = batas 500 km</span>
+          <iframe src="map.html" loading="lazy" title="Peta lokasi absensi" style="position:absolute;inset:0;width:100%;height:100%;border:0;display:block"></iframe>
         </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:10px">
